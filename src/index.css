@@ -1,0 +1,136 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-white text-gray-800 font-sans antialiased;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white/80 backdrop-blur-md border border-white/20 shadow-xl rounded-2xl;
+  }
+
+  .hover-lift {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl;
+  }
+
+  .gradient-border {
+    @apply relative before:absolute before:inset-0 before:p-[2px] before:bg-gradient-to-r before:from-secondary before:to-accent before:rounded-2xl before:-z-10;
+  }
+
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+/* ============================================
+   ANIMAÇÕES
+============================================ */
+
+@keyframes gradient-xy {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient-xy {
+  background-size: 200% 200%;
+  animation: gradient-xy 15s ease infinite;
+}
+
+/* ============================================
+   BOTÕES
+============================================ */
+
+.btn-glow {
+  box-shadow: 0 0 10px rgba(34, 211, 238, 0.3);
+  transition: box-shadow 0.3s ease;
+}
+
+.btn-glow:hover {
+  box-shadow: 0 0 20px rgba(34, 211, 238, 0.6);
+}
+
+/* ============================================
+   CORREÇÃO DEFINITIVA DOS TÍTULOS
+============================================ */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+h1 span,
+h2 span,
+h3 span,
+h4 span,
+h5 span,
+h6 span {
+  text-transform: none !important;
+  letter-spacing: normal !important;
+  word-spacing: normal !important;
+  white-space: normal !important;
+  font-variant: normal !important;
+  text-rendering: optimizeLegibility;
+}
+
+/* Mantém títulos corretamente renderizados */
+.products-section h1,
+.products-section h2,
+.products-section h3,
+.services-section h1,
+.services-section h2,
+.services-section h3,
+section h1,
+section h2,
+section h3 {
+  display: block !important;
+}
+
+/* Mantém spans normais */
+.products-section h1 span,
+.products-section h2 span,
+.products-section h3 span,
+.services-section h1 span,
+.services-section h2 span,
+.services-section h3 span,
+section h1 span,
+section h2 span,
+section h3 span {
+  display: inline !important;
+}
+
+/* ============================================
+   UTILITÁRIOS
+============================================ */
+
+@layer utilities {
+  .no-text-transform {
+    text-transform: none !important;
+  }
+}
