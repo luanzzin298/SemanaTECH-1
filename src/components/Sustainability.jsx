@@ -276,24 +276,7 @@ const Sustainability = () => {
           transition={{ delay: 0.3 }}
           className="mt-12 text-center"
         >
-          <div className="bg-gradient-to-r from-cyan-50 to-white rounded-2xl p-6 md:p-8 shadow-lg max-w-3xl mx-auto">
-            <h3 className="text-xl md:text-2xl font-bold text-[#001C30] mb-2">
-              Faça parte dessa mudança
-            </h3>
-            <p className="text-gray-600 text-sm mb-5">
-              Conheça nossas soluções sustentáveis e contribua para um futuro mais verde.
-            </p>
-            <Link
-              to="/contato"
-              className="inline-flex items-center gap-2 bg-cyan-500 hover:bg-cyan-600 
-                         text-white font-semibold px-6 py-2.5 rounded-full 
-                         transition-all duration-300 shadow-lg hover:shadow-xl 
-                         hover:-translate-y-1 group text-sm"
-            >
-              Fale com um especialista
-              <FaHandsHelping className="group-hover:translate-x-1 transition-transform text-sm" />
-            </Link>
-          </div>
+          
         </motion.div>
 
       </div>

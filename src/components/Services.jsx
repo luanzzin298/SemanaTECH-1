@@ -5,7 +5,7 @@ import { FaCheckCircle, FaArrowRight, FaClock, FaChartLine, FaHandshake, FaShiel
 import { services } from '../data/content'
 
 // ============================================
-// ANIMAÇÕES PADRONIZADAS (MESMAS DOS OUTROS COMPONENTES)
+// ANIMAÇÕES PADRONIZADAS
 // ============================================
 
 const fadeUp = {
@@ -66,7 +66,7 @@ const ServiceCard = memo(({ svc, idx }) => {
 
         {/* ÍCONE */}
         <div className="relative mb-5">
-          <div className="bg-gradient-to-br from-cyan-100 to-cyan-200 w-16 h-16 rounded-xl flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform duration-500">
+          <div className="bg-gradient-to-br from-cyan-100 to-blue-100 w-16 h-16 rounded-xl flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform duration-500">
             <Icon className="text-2xl text-cyan-600" />
           </div>
 
@@ -95,7 +95,7 @@ const ServiceCard = memo(({ svc, idx }) => {
         </Link>
 
         {/* LINHA ANIMADA */}
-        <div className="w-12 h-0.5 bg-cyan-300 mt-5 rounded-full group-hover:w-24 transition-all duration-500" />
+        <div className="w-12 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 mt-5 rounded-full group-hover:w-24 transition-all duration-500" />
       </div>
     </motion.article>
   )
@@ -109,6 +109,18 @@ ServiceCard.displayName = 'ServiceCard'
 const Services = () => {
   const sectionRef = useRef(null)
   const location = useLocation()
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+
+  // Efeito de mouse para gradiente dinâmico
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      const x = (e.clientX / window.innerWidth) * 100
+      const y = (e.clientY / window.innerHeight) * 100
+      setMousePosition({ x, y })
+    }
+    window.addEventListener('mousemove', handleMouseMove)
+    return () => window.removeEventListener('mousemove', handleMouseMove)
+  }, [])
 
   // Scroll automático para o topo da seção quando a página carregar
   useEffect(() => {
@@ -155,9 +167,26 @@ const Services = () => {
     <section
       ref={sectionRef}
       id="services"
-      className="pt-24 pb-20 bg-gradient-to-b from-white to-gray-50 overflow-hidden"
+      className="pt-24 pb-20 bg-gradient-to-br from-gray-50 via-white to-gray-50 overflow-hidden relative"
     >
-      <div className="container mx-auto px-6">
+      {/* Fundo com gradiente dinâmico */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div 
+          className="absolute inset-0 opacity-30"
+          style={{
+            background: `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(6, 182, 212, 0.08) 0%, rgba(6, 182, 212, 0) 50%)`
+          }}
+        />
+      </div>
+
+      {/* Padrão decorativo de fundo */}
+      <div className="absolute inset-0 opacity-5 pointer-events-none">
+        <div className="absolute top-0 left-0 w-64 h-64 bg-cyan-400 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-600 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-cyan-300 rounded-full blur-3xl" />
+      </div>
+
+      <div className="container mx-auto px-6 relative z-10">
         
         {/* ========== CABEÇALHO ========== */}
         <motion.div
@@ -171,16 +200,16 @@ const Services = () => {
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
-            className="inline-block bg-cyan-100 text-cyan-700 text-sm font-semibold
-                       px-4 py-1 rounded-full mb-4"
+            className="inline-block bg-gradient-to-r from-cyan-100 to-blue-100 text-cyan-700 text-sm font-semibold
+                       px-4 py-1.5 rounded-full mb-4 shadow-sm"
           >
             Soluções Completas
           </motion.span>
 
           <h1 className="text-4xl md:text-5xl font-bold text-[#001C30] mb-4">
-            Serviços <span className="text-cyan-500">Especializados</span>
+            Serviços <span className="bg-gradient-to-r from-cyan-500 to-blue-600 bg-clip-text text-transparent">Especializados</span>
           </h1>
-          <div className="w-24 h-1 bg-cyan-400 mx-auto mb-6 rounded-full" />
+          <div className="w-24 h-1 bg-gradient-to-r from-cyan-400 to-blue-600 mx-auto mb-6 rounded-full" />
           <p className="text-gray-600 text-lg max-w-2xl mx-auto">
             Da consultoria estratégica à logística inteligente, entregamos valor em cada etapa da sua cadeia produtiva.
           </p>
@@ -208,9 +237,9 @@ const Services = () => {
         >
           <div className="text-center mb-10">
             <h2 className="text-2xl font-bold text-[#001C30] mb-3">
-              Por que escolher a <span className="text-cyan-500">H2B Plásticos</span>?
+              Por que escolher a <span className="bg-gradient-to-r from-cyan-500 to-blue-600 bg-clip-text text-transparent">H2B Plásticos</span>?
             </h2>
-            <div className="w-16 h-0.5 bg-cyan-400 mx-auto rounded-full" />
+            <div className="w-16 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-600 mx-auto rounded-full" />
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -223,7 +252,7 @@ const Services = () => {
                   whileHover={{ y: -4 }}
                   className="flex items-start gap-4 p-5 bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 group"
                 >
-                  <div className="bg-gradient-to-br from-cyan-100 to-cyan-200 p-3 rounded-xl shrink-0 group-hover:scale-110 transition-transform duration-300">
+                  <div className="bg-gradient-to-br from-cyan-100 to-blue-100 p-3 rounded-xl shrink-0 group-hover:scale-110 transition-transform duration-300">
                     <BenefitIcon className="text-xl text-cyan-600" />
                   </div>
                   <div>
@@ -246,10 +275,11 @@ const Services = () => {
           viewport={{ once: true }}
           className="mb-16"
         >
-          <div className="bg-gradient-to-r from-[#001C30] to-[#0A4A6E] rounded-3xl p-8 md:p-12 text-white text-center shadow-xl relative overflow-hidden">
+          <div className="relative bg-gradient-to-br from-[#001C30] to-[#0A4A6E] rounded-3xl p-8 md:p-12 text-white text-center shadow-xl overflow-hidden">
             {/* Elementos decorativos */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl" />
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-cyan-400/10 rounded-full blur-3xl" />
+            <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cg fill=&quot;none&quot; fill-rule=&quot;evenodd&quot;%3E%3Cg fill=&quot;%2300D4FF&quot; fill-opacity=&quot;0.05&quot;%3E%3Cpath d=&quot;M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z&quot;/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')]" />
             
             <div className="relative z-10">
               <h3 className="text-2xl md:text-3xl font-bold mb-3">Nossa Metodologia de Trabalho</h3>
@@ -297,7 +327,9 @@ const Services = () => {
                 whileHover={{ y: -4 }}
                 className="text-center p-6 bg-white rounded-2xl shadow-md border border-cyan-100 hover:shadow-xl transition-all duration-300"
               >
-                <div className="text-3xl font-bold text-cyan-600">{stat.value}</div>
+                <div className="text-3xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">
+                  {stat.value}
+                </div>
                 <p className="text-xs text-gray-500 mt-2 uppercase tracking-wide">{stat.label}</p>
               </motion.div>
             ))}
@@ -312,7 +344,10 @@ const Services = () => {
           viewport={{ once: true }}
           className="text-center"
         >
-          <div className="bg-gradient-to-r from-cyan-50 to-white rounded-2xl p-8 md:p-10 shadow-lg border border-cyan-100 max-w-3xl mx-auto">
+          <div className="bg-gradient-to-br from-cyan-50 to-white rounded-2xl p-8 md:p-10 shadow-lg border border-cyan-100 max-w-3xl mx-auto relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-400/5 rounded-full blur-2xl" />
+            <div className="absolute bottom-0 left-0 w-32 h-32 bg-blue-500/5 rounded-full blur-2xl" />
+            
             <FaCheckCircle className="text-5xl text-cyan-500 mx-auto mb-4" />
             <h3 className="text-2xl md:text-3xl font-bold text-[#001C30] mb-3">
               Pronto para elevar a qualidade da sua embalagem?
@@ -322,8 +357,8 @@ const Services = () => {
             </p>
             <Link
               to="/contato"
-              className="inline-flex items-center gap-2 bg-cyan-500 hover:bg-cyan-600 
-                         text-white font-semibold px-8 py-3 rounded-full 
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-600 
+                         hover:from-cyan-600 hover:to-blue-700 text-white font-semibold px-8 py-3 rounded-full 
                          transition-all duration-300 shadow-lg hover:shadow-xl 
                          hover:-translate-y-1 group"
             >

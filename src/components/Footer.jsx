@@ -56,19 +56,6 @@ const Footer = () => {
       <div className="absolute -top-20 -right-20 w-64 h-64 bg-cyan-300/5 rounded-full blur-3xl"></div>
       <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-cyan-300/5 rounded-full blur-3xl"></div>
       
-      {/* Botão de voltar ao topo */}
-      <button
-        onClick={handleScrollToTop}
-        className="absolute right-6 bottom-6 z-20 bg-cyan-500 hover:bg-cyan-600 text-white 
-                   w-10 h-10 rounded-full flex items-center justify-center shadow-lg 
-                   transition-all duration-300 hover:scale-110 hover:shadow-xl"
-        aria-label="Voltar ao topo"
-      >
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
-        </svg>
-      </button>
-      
       <div className="container mx-auto px-6 relative z-10">
         <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
           {/* Coluna 1 - Logo e Redes Sociais */}
@@ -205,8 +192,6 @@ const Footer = () => {
             </Link>
           </div>
         </div>
-
-        
       </div>
     </footer>
   )

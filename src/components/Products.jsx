@@ -15,14 +15,26 @@ const Products = () => {
   const [selectedCategory, setSelectedCategory] = useState('Todos')
   const [showFilter, setShowFilter] = useState(false)
   const [selectedProduct, setSelectedProduct] = useState(null)
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const location = useLocation()
   const sectionRef = useRef(null)
+
+  // Efeito de mouse para gradiente dinâmico
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      const x = (e.clientX / window.innerWidth) * 100
+      const y = (e.clientY / window.innerHeight) * 100
+      setMousePosition({ x, y })
+    }
+    window.addEventListener('mousemove', handleMouseMove)
+    return () => window.removeEventListener('mousemove', handleMouseMove)
+  }, [])
 
   // Scroll automático para o topo da seção quando a página carregar
   useEffect(() => {
     setTimeout(() => {
       if (sectionRef.current) {
-        const offset = 70 // Compensação para o header fixo
+        const offset = 70
         const elementPosition = sectionRef.current.getBoundingClientRect().top
         const offsetPosition = elementPosition + window.pageYOffset - offset
         
@@ -34,7 +46,7 @@ const Products = () => {
     }, 100)
   }, [])
 
-  // Verificar se veio com o parâmetro ?form=true e rolar suavemente até o formulário na página de contato
+  // Verificar se veio com o parâmetro ?form=true
   useEffect(() => {
     const params = new URLSearchParams(location.search)
     const shouldScrollToForm = params.get('form') === 'true'
@@ -59,7 +71,7 @@ const Products = () => {
     }
   }, [location])
 
-  // IMAGENS ESPECÍFICAS DOS PRODUTOS (6 PRODUTOS)
+  // IMAGENS ESPECÍFICAS DOS PRODUTOS
   const productImages = {
     'Saco Big Bag': 'https://images.unsplash.com/photo-1581092335871-4c4b7a4b9c5d?w=600&h=400&fit=crop',
     'Embalagem para Alimentos': 'https://images.unsplash.com/photo-1606787366850-de6330128bfc?w=600&h=400&fit=crop',
@@ -95,9 +107,26 @@ const Products = () => {
     <section 
       ref={sectionRef}
       id="products" 
-      className="products-section pt-24 pb-20 bg-white overflow-hidden"
+      className="pt-24 pb-20 bg-gradient-to-br from-gray-50 via-white to-gray-50 overflow-hidden relative"
     >
-      <div className="container mx-auto px-6">
+      {/* Fundo com gradiente dinâmico */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div 
+          className="absolute inset-0 opacity-30"
+          style={{
+            background: `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(6, 182, 212, 0.08) 0%, rgba(6, 182, 212, 0) 50%)`
+          }}
+        />
+      </div>
+
+      {/* Padrão decorativo de fundo */}
+      <div className="absolute inset-0 opacity-5 pointer-events-none">
+        <div className="absolute top-0 left-0 w-64 h-64 bg-cyan-400 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-600 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-cyan-300 rounded-full blur-3xl" />
+      </div>
+
+      <div className="container mx-auto px-6 relative z-10">
         {/* HEADER - PADRONIZADO */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -111,14 +140,14 @@ const Products = () => {
             transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
             className="inline-block mb-3"
           >
-            <span className="bg-cyan-100 text-cyan-700 text-xs font-semibold px-3 py-1 rounded-full">
+            <span className="bg-gradient-to-r from-cyan-100 to-blue-100 text-cyan-700 text-sm font-semibold px-4 py-1.5 rounded-full shadow-sm">
               Produtos de Alta Performance
             </span>
           </motion.div>
           <h2 className="text-3xl md:text-4xl font-bold text-[#001C30] mb-3">
-            Nossos <span className="text-cyan-500">Produtos</span>
+            Nossos <span className="bg-gradient-to-r from-cyan-500 to-blue-600 bg-clip-text text-transparent">Produtos</span>
           </h2>
-          <div className="w-20 h-1 bg-cyan-400 mx-auto mb-4 rounded-full"></div>
+          <div className="w-20 h-1 bg-gradient-to-r from-cyan-400 to-blue-600 mx-auto mb-4 rounded-full"></div>
           <p className="text-gray-600 max-w-2xl mx-auto text-base">
             Soluções plásticas desenvolvidas com tecnologia de ponta e precisão para sua indústria.
           </p>
@@ -135,13 +164,13 @@ const Products = () => {
           <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
             {/* INPUT */}
             <div className="relative w-full lg:w-96">
-              <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+              <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
               <input
                 type="text"
                 placeholder="Buscar produtos..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-100 transition-all text-sm"
+                className="w-full pl-10 pr-10 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-100 transition-all text-sm bg-white"
               />
               {searchTerm && (
                 <button
@@ -156,9 +185,9 @@ const Products = () => {
             {/* FILTRO MOBILE */}
             <button
               onClick={() => setShowFilter(!showFilter)}
-              className="md:hidden flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-lg text-gray-600 text-sm"
+              className="md:hidden flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-xl text-gray-600 text-sm shadow-sm"
             >
-              <FaFilter /> Filtrar
+              <FaFilter className="text-cyan-500" /> Filtrar
             </button>
 
             {/* CATEGORIAS DESKTOP */}
@@ -167,10 +196,10 @@ const Products = () => {
                 <button
                   key={cat}
                   onClick={() => setSelectedCategory(cat)}
-                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300 ${
+                  className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-300 ${
                     selectedCategory === cat
-                      ? 'bg-cyan-500 text-white shadow-md'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md'
+                      : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
                   }`}
                 >
                   {cat}
@@ -196,8 +225,8 @@ const Products = () => {
                   }}
                   className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
                     selectedCategory === cat
-                      ? 'bg-cyan-500 text-white'
-                      : 'bg-gray-100 text-gray-600'
+                      ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white'
+                      : 'bg-white text-gray-600 border border-gray-200'
                   }`}
                 >
                   {cat}
@@ -207,7 +236,7 @@ const Products = () => {
           )}
         </motion.div>
 
-        {/* GRID DE PRODUTOS - 6 PRODUTOS */}
+        {/* GRID DE PRODUTOS - SEM BOTÃO SOLICITAR COTAÇÃO */}
         {filteredProducts.length > 0 ? (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredProducts.map((product, idx) => (
@@ -237,12 +266,12 @@ const Products = () => {
                     </div>
                   </div>
                   {product.tag && (
-                    <span className="absolute top-3 right-3 bg-cyan-500 text-white text-xs font-semibold px-2 py-0.5 rounded-full shadow-lg">
+                    <span className="absolute top-3 right-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-xs font-semibold px-2 py-0.5 rounded-full shadow-lg">
                       {product.tag}
                     </span>
                   )}
                   {product.featured && (
-                    <span className="absolute top-3 left-3 bg-yellow-500 text-white text-xs font-semibold px-2 py-0.5 rounded-full shadow-lg">
+                    <span className="absolute top-3 left-3 bg-gradient-to-r from-cyan-400 to-blue-500 text-white text-xs font-semibold px-2 py-0.5 rounded-full shadow-lg">
                       ★ Destaque
                     </span>
                   )}
@@ -250,9 +279,9 @@ const Products = () => {
 
                 {/* CONTEÚDO */}
                 <div className="p-5">
-                  <div className="flex items-start justify-between mb-2">
+                  <div className="flex items-start justify-between mb-3">
                     <div className="flex items-center gap-2">
-                      <div className="bg-gradient-to-br from-cyan-100 to-cyan-200 w-10 h-10 rounded-xl flex items-center justify-center shadow-sm">
+                      <div className="bg-gradient-to-br from-cyan-100 to-blue-100 w-10 h-10 rounded-xl flex items-center justify-center shadow-sm">
                         <product.icon className="text-xl text-cyan-600" />
                       </div>
                       <h3 className="text-lg font-bold text-[#001C30] group-hover:text-cyan-600 transition-colors">
@@ -261,20 +290,14 @@ const Products = () => {
                     </div>
                   </div>
                   
-                  <p className="text-gray-600 leading-relaxed mb-3 text-sm">
+                  <p className="text-gray-600 leading-relaxed mb-4 text-sm">
                     {product.desc}
                   </p>
                   
-                  <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-                    <Link
-                      to="/contato"
-                      className="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all duration-300 text-xs shadow-md hover:shadow-lg"
-                    >
-                      <FaWhatsapp size={14} /> Solicitar cotação
-                    </Link>
+                  <div className="flex items-center justify-end pt-3 border-t border-gray-100">
                     <button
                       onClick={() => setSelectedProduct(product)}
-                      className="text-cyan-600 font-semibold flex items-center gap-1 hover:gap-2 transition-all duration-300 text-xs"
+                      className="text-cyan-600 font-semibold flex items-center gap-1 hover:gap-2 transition-all duration-300 text-sm"
                     >
                       Ver detalhes
                       <svg className="w-3 h-3 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -333,27 +356,42 @@ const Products = () => {
                   <FaTimes size={14} />
                 </button>
               </div>
-              <div className="p-5">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="bg-gradient-to-br from-cyan-100 to-cyan-200 w-14 h-14 rounded-xl flex items-center justify-center">
+              <div className="p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="bg-gradient-to-br from-cyan-100 to-blue-100 w-14 h-14 rounded-xl flex items-center justify-center">
                     <selectedProduct.icon className="text-2xl text-cyan-600" />
                   </div>
                   <h3 className="text-xl font-bold text-[#001C30]">{selectedProduct.name}</h3>
                 </div>
-                <p className="text-gray-600 leading-relaxed mb-3 text-sm">{selectedProduct.desc}</p>
-                <div className="bg-gray-50 rounded-xl p-3 mb-3">
-                  <h4 className="font-semibold text-[#001C30] mb-1 text-sm">Especificações:</h4>
-                  <ul className="text-xs text-gray-600 space-y-1">
-                    <li>• Material de alta resistência e durabilidade</li>
-                    <li>• Disponível em diversas medidas e espessuras</li>
-                    <li>• Personalizável conforme necessidade do cliente</li>
-                    <li>• Certificação de qualidade ISO 9001</li>
-                    <li>• Sustentável e reciclável</li>
+                <p className="text-gray-600 leading-relaxed mb-4 text-sm">{selectedProduct.desc}</p>
+                <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 mb-4 border border-gray-100">
+                  <h4 className="font-semibold text-[#001C30] mb-2 text-sm">Especificações:</h4>
+                  <ul className="text-sm text-gray-600 space-y-1">
+                    <li className="flex items-center gap-2">
+                      <div className="w-1.5 h-1.5 bg-cyan-500 rounded-full"></div>
+                      Material de alta resistência e durabilidade
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <div className="w-1.5 h-1.5 bg-cyan-500 rounded-full"></div>
+                      Disponível em diversas medidas e espessuras
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <div className="w-1.5 h-1.5 bg-cyan-500 rounded-full"></div>
+                      Personalizável conforme necessidade do cliente
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <div className="w-1.5 h-1.5 bg-cyan-500 rounded-full"></div>
+                      Certificação de qualidade ISO 9001
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <div className="w-1.5 h-1.5 bg-cyan-500 rounded-full"></div>
+                      Sustentável e reciclável
+                    </li>
                   </ul>
                 </div>
                 <Link
                   to="/contato"
-                  className="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-semibold flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl transition-all duration-300 shadow-md text-sm"
+                  className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-semibold flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl transition-all duration-300 shadow-md text-sm"
                   onClick={() => setSelectedProduct(null)}
                 >
                   <FaWhatsapp size={16} /> Solicitar orçamento agora
@@ -368,17 +406,19 @@ const Products = () => {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mt-12 text-center bg-gradient-to-r from-[#001C30] to-[#0A4A6E] rounded-2xl p-6 md:p-8"
+          className="mt-12 text-center bg-gradient-to-br from-[#001C30] to-[#0A4A6E] rounded-2xl p-8 md:p-10 overflow-hidden relative"
         >
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cg fill=&quot;none&quot; fill-rule=&quot;evenodd&quot;%3E%3Cg fill=&quot;%2300D4FF&quot; fill-opacity=&quot;0.05&quot;%3E%3Cpath d=&quot;M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z&quot;/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')]" />
+          
           <h3 className="text-xl md:text-2xl font-bold text-white mb-3">
             Precisa de uma solução personalizada?
           </h3>
-          <p className="text-gray-300 mb-5 max-w-2xl mx-auto text-sm">
+          <p className="text-cyan-100 mb-6 max-w-2xl mx-auto text-sm">
             Desenvolvemos produtos plásticos sob medida para atender às necessidades específicas da sua indústria.
           </p>
           <Link
             to="/contato"
-            className="inline-block bg-cyan-500 hover:bg-cyan-400 text-white font-semibold px-6 py-2.5 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-1 text-sm"
+            className="inline-block bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-500 hover:to-blue-600 text-white font-semibold px-8 py-3 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-1 text-sm"
           >
             Fale com um especialista
           </Link>

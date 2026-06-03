@@ -12,15 +12,17 @@ import { Link } from 'react-router-dom'
 
 const Hero = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const [logoMousePosition, setLogoMousePosition] = useState({ x: 0, y: 0 })
   const containerRef = useRef(null)
   const sectionRef = useRef(null)
+  const logoContainerRef = useRef(null)
+  const logoRef = useRef(null)
 
   // Scroll automático para o topo da seção quando a página carregar
   useEffect(() => {
-    // Força o scroll para o topo da seção Hero
     setTimeout(() => {
       if (sectionRef.current) {
-        const offset = 80 // Compensação para o header fixo
+        const offset = 80
         const elementPosition = sectionRef.current.getBoundingClientRect().top
         const offsetPosition = elementPosition + window.pageYOffset - offset
         
@@ -32,24 +34,16 @@ const Hero = () => {
     }, 100)
   }, [])
 
-  // ============================================
-  // 🔧 CONFIGURAÇÕES DAS IMAGENS
-  // ============================================
-
-  // IMAGEM DE FUNDO
+  // Configurações das imagens
   const BACKGROUND_IMAGE_URL =
     'https://static.blocks-cms.com/h2bplasticos/upload/slide/6d7e083fa5224d66bd26394de530be51.png'
 
-  // IMAGEM DA LOGO
   const LOGO_IMAGE_URL =
     'https://h2bplasticos.com.br/_next/image?url=%2Fimagens%2Flogo-h2b-removebg-preview.png&w=1080&q=75'
 
-  // TEXTO
   const IMAGE_CAPTION = "Onde tecnologia e sustentabilidade se encontram."
 
-  // ============================================
-
-  // Mouse parallax effect
+  // Mouse parallax effect para o texto
   useEffect(() => {
     const handleMouseMove = (e) => {
       if (containerRef.current) {
@@ -64,6 +58,35 @@ const Hero = () => {
     return () => window.removeEventListener('mousemove', handleMouseMove)
   }, [])
 
+  // Efeito de brilho do mouse na logo
+  useEffect(() => {
+    const handleLogoMouseMove = (e) => {
+      if (logoContainerRef.current) {
+        const rect = logoContainerRef.current.getBoundingClientRect()
+        const x = ((e.clientX - rect.left) / rect.width) * 100
+        const y = ((e.clientY - rect.top) / rect.height) * 100
+        setLogoMousePosition({ x, y })
+      }
+    }
+
+    const logoContainer = logoContainerRef.current
+    if (logoContainer) {
+      logoContainer.addEventListener('mousemove', handleLogoMouseMove)
+      logoContainer.addEventListener('mouseleave', () => {
+        setLogoMousePosition({ x: 50, y: 50 })
+      })
+    }
+
+    return () => {
+      if (logoContainer) {
+        logoContainer.removeEventListener('mousemove', handleLogoMouseMove)
+        logoContainer.removeEventListener('mouseleave', () => {
+          setLogoMousePosition({ x: 50, y: 50 })
+        })
+      }
+    }
+  }, [])
+
   const parallaxX = useSpring(
     useTransform(() => mousePosition.x * 20),
     { damping: 30, stiffness: 200 }
@@ -74,7 +97,7 @@ const Hero = () => {
     { damping: 30, stiffness: 200 }
   )
 
-  // Partículas
+  // Partículas - MAIS ESCURAS E MENOS TRANSPARENTES
   const particles = Array.from({ length: 40 }, (_, i) => ({
     id: i,
     size: Math.random() * 6 + 2,
@@ -82,7 +105,7 @@ const Hero = () => {
     top: `${Math.random() * 100}%`,
     duration: Math.random() * 15 + 10,
     delay: Math.random() * 5,
-    opacity: Math.random() * 0.4 + 0.1,
+    opacity: Math.random() * 0.6 + 0.3, // Aumentado de 0.4+0.1 para 0.6+0.3 (mais escuro/menos transparente)
   }))
 
   // Estatísticas
@@ -109,14 +132,14 @@ const Hero = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-[#001C30]/90 via-[#0A4A6E]/80 to-[#001C30]/90" />
       </div>
 
-      {/* Overlay industrial */}
-      <div className="absolute inset-0 opacity-30 bg-[url('data:image/svg+xml,%3Csvg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cg fill=&quot;none&quot; fill-rule=&quot;evenodd&quot;%3E%3Cg fill=&quot;%23ffffff&quot; fill-opacity=&quot;0.03&quot;%3E%3Cpath d=&quot;M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z&quot;/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')]" />
+      {/* Overlay industrial - MAIS ESCURO (opacity reduzida de 0.3 para 0.15 e fill-opacity aumentado) */}
+      <div className="absolute inset-0 opacity-20 bg-[url('data:image/svg+xml,%3Csvg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cg fill=&quot;none&quot; fill-rule=&quot;evenodd&quot;%3E%3Cg fill=&quot;%23ffffff&quot; fill-opacity=&quot;0.15&quot;%3E%3Cpath d=&quot;M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z&quot;/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')]" />
 
-      {/* Partículas */}
+      {/* Partículas - MAIS ESCURAS E MENOS TRANSPARENTES */}
       {particles.map((p) => (
         <motion.div
           key={p.id}
-          className="absolute rounded-full bg-cyan-300/30"
+          className="absolute rounded-full bg-cyan-300/60" // Aumentado de /30 para /60
           style={{
             width: p.size,
             height: p.size,
@@ -224,7 +247,7 @@ const Hero = () => {
               entregamos soluções personalizadas que unem durabilidade, segurança e inovação.
             </motion.p>
 
-            {/* Botões - CORRIGIDOS COM LINKS */}
+            {/* Botões */}
             <motion.div
               className="flex flex-wrap gap-4 pt-4"
               initial={{ opacity: 0, y: 20 }}
@@ -235,7 +258,7 @@ const Hero = () => {
                 to="/contato"
                 className="bg-cyan-300 hover:bg-cyan-200 text-[#001C30] font-semibold px-8 py-3 rounded-full flex items-center gap-2 transition-all duration-300 shadow-lg"
               >
-                Solicitar Orçamento
+                Solicitar Atendimento
                 <FaArrowRight />
               </Link>
 
@@ -267,43 +290,105 @@ const Hero = () => {
             </motion.div>
           </motion.div>
 
-          {/* LOGO */}
+          {/* LOGO COM EFEITO DE BRILHO DO MOUSE */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.8, duration: 0.8 }}
             className="hidden lg:flex justify-center items-center ml-24 xl:ml-60"
           >
-            <div className="relative bg-white/10 backdrop-blur-md rounded-3xl p-10 border border-cyan-300/30 shadow-2xl max-w-md w-full overflow-hidden">
+            <div
+              ref={logoContainerRef}
+              className="relative group cursor-pointer"
+              style={{ perspective: '1000px' }}
+            >
+              {/* Efeito de brilho externo */}
+              <div className="absolute -inset-4 bg-cyan-300/20 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               
-              {/* brilho */}
-              <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-cyan-300/10 to-transparent pointer-events-none" />
-
-              {/* logo */}
-              <div className="flex justify-center relative z-10">
-                <img
-                  src={LOGO_IMAGE_URL}
-                  alt="Logo H2B"
-                  className="w-80 h-auto object-contain hover:scale-105 transition-transform duration-500 drop-shadow-2xl"
-                  onError={(e) => {
-                    e.target.onerror = null
-                    e.target.src =
-                      'https://placehold.co/400x200/0A4A6E/cyan?text=H2B'
-                  }}
+              {/* Card principal */}
+              <div className="relative bg-white/10 backdrop-blur-md rounded-3xl p-10 border border-cyan-300/30 shadow-2xl max-w-md w-full overflow-hidden">
+                
+                {/* Gradiente animado de fundo */}
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-br from-cyan-300/5 to-transparent"
+                  animate={{ opacity: [0.3, 0.6, 0.3] }}
+                  transition={{ duration: 4, repeat: Infinity }}
                 />
+
+                {/* EFEITO DE BRILHO DO MOUSE - RADIAL GRADIENTE SEGUINDO O CURSOR */}
+                <motion.div
+                  className="absolute inset-0 pointer-events-none transition-opacity duration-300"
+                  style={{
+                    background: `radial-gradient(circle at ${logoMousePosition.x}% ${logoMousePosition.y}%, rgba(6, 182, 212, 0.4) 0%, rgba(6, 182, 212, 0.1) 30%, rgba(6, 182, 212, 0) 70%)`,
+                  }}
+                  animate={{
+                    opacity: logoMousePosition.x !== 50 ? 1 : 0.5,
+                  }}
+                  transition={{ duration: 0.1 }}
+                />
+
+                {/* EFEITO DE REFLEXO ESPECULAR */}
+                <motion.div
+                  className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100"
+                  style={{
+                    background: `radial-gradient(circle at ${logoMousePosition.x}% ${logoMousePosition.y}%, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 50%)`,
+                  }}
+                  transition={{ duration: 0.1 }}
+                />
+
+                {/* Linha decorativa superior */}
+                <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-300/50 to-transparent" />
+
+                {/* Logo com efeito 3D seguindo o mouse */}
+                <motion.div
+                  ref={logoRef}
+                  className="flex justify-center relative z-10"
+                  animate={{
+                    rotateX: (logoMousePosition.y - 50) * -0.2,
+                    rotateY: (logoMousePosition.x - 50) * 0.2,
+                  }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  style={{ transformStyle: "preserve-3d" }}
+                >
+                  <img
+                    src={LOGO_IMAGE_URL}
+                    alt="Logo H2B"
+                    className="w-80 h-auto object-contain transition-all duration-500 group-hover:scale-105 drop-shadow-2xl"
+                    onError={(e) => {
+                      e.target.onerror = null
+                      e.target.src =
+                        'https://placehold.co/400x200/0A4A6E/cyan?text=H2B'
+                    }}
+                  />
+                </motion.div>
+
+                {/* Linha divisória */}
+                <div className="relative my-6">
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-cyan-300/20"></div>
+                  </div>
+                  <div className="relative flex justify-center">
+                    <div className="w-12 h-[2px] bg-cyan-300/50 rounded-full"></div>
+                  </div>
+                </div>
+
+                {/* Texto */}
+                <motion.p
+                  className="text-center text-white text-lg font-semibold tracking-wide relative z-10"
+                  animate={{
+                    textShadow: logoMousePosition.x !== 50
+                      ? `0 0 10px rgba(6, 182, 212, 0.5)`
+                      : `0 0 0px rgba(6, 182, 212, 0)`
+                  }}
+                >
+                  {IMAGE_CAPTION}
+                </motion.p>
+
+                {/* Círculos decorativos */}
+                <div className="absolute -top-10 -right-10 w-32 h-32 bg-cyan-300/20 rounded-full blur-3xl" />
+                <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-cyan-500/20 rounded-full blur-3xl" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-cyan-300/5 rounded-full blur-3xl" />
               </div>
-
-              {/* linha */}
-              <div className="w-20 h-[2px] bg-cyan-300 mx-auto my-6 rounded-full" />
-
-              {/* texto */}
-              <p className="text-center text-white text-lg font-semibold tracking-wide relative z-10">
-                {IMAGE_CAPTION}
-              </p>
-
-              {/* efeitos */}
-              <div className="absolute -top-10 -right-10 w-32 h-32 bg-cyan-300/20 rounded-full blur-3xl" />
-              <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-cyan-500/20 rounded-full blur-3xl" />
             </div>
           </motion.div>
         </div>

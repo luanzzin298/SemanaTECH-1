@@ -12,8 +12,8 @@ const WhatsAppButton = () => {
       target="_blank"
       rel="noopener noreferrer"
       className="fixed bottom-6 right-6 bg-cyan-500 text-white p-4 rounded-full 
-                 shadow-2xl z-50 hover:bg-cyan-600 transition-all duration-300 
-                 group shadow-lg hover:shadow-xl"
+      shadow-2xl z-50 hover:bg-cyan-600 transition-all duration-300 
+      group shadow-lg hover:shadow-xl"
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.9 }}
       initial={{ scale: 0 }}
