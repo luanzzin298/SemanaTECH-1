@@ -97,15 +97,15 @@ const Hero = () => {
     { damping: 30, stiffness: 200 }
   )
 
-  // Partículas - MAIS ESCURAS E MENOS TRANSPARENTES
-  const particles = Array.from({ length: 40 }, (_, i) => ({
+  // Partículas - MAIS VISÍVEIS (opacidade e cor aumentadas)
+  const particles = Array.from({ length: 45 }, (_, i) => ({
     id: i,
-    size: Math.random() * 6 + 2,
+    size: Math.random() * 6 + 2, // Tamanho um pouco maior
     left: `${Math.random() * 100}%`,
     top: `${Math.random() * 100}%`,
     duration: Math.random() * 15 + 10,
     delay: Math.random() * 5,
-    opacity: Math.random() * 0.6 + 0.3, // Aumentado de 0.4+0.1 para 0.6+0.3 (mais escuro/menos transparente)
+    opacity: Math.random() * 0.5 + 0.3, // Mais visíveis (0.3-0.8)
   }))
 
   // Estatísticas
@@ -121,25 +121,25 @@ const Hero = () => {
       id="home"
       className="relative min-h-screen flex items-center overflow-hidden"
     >
-      {/* BACKGROUND */}
+      {/* BACKGROUND - Mesma cor da página About */}
       <div className="absolute inset-0 z-0">
         <img
           src={BACKGROUND_IMAGE_URL}
           alt="Fábrica H2B Plásticos"
           className="w-full h-full object-cover"
         />
-        {/* Overlay escuro AZUL */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#001C30]/90 via-[#0A4A6E]/80 to-[#001C30]/90" />
+        {/* Gradiente escuro azulado - MESMO ESTILO da página About */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#001C30] via-[#001C30] to-[#0A4A6E] opacity-95" />
       </div>
 
-      {/* Overlay industrial - MAIS ESCURO (opacity reduzida de 0.3 para 0.15 e fill-opacity aumentado) */}
-      <div className="absolute inset-0 opacity-20 bg-[url('data:image/svg+xml,%3Csvg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cg fill=&quot;none&quot; fill-rule=&quot;evenodd&quot;%3E%3Cg fill=&quot;%23ffffff&quot; fill-opacity=&quot;0.15&quot;%3E%3Cpath d=&quot;M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z&quot;/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')]" />
+      {/* Overlay industrial suave */}
+      <div className="absolute inset-0 opacity-15 bg-[url('data:image/svg+xml,%3Csvg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cg fill=&quot;none&quot; fill-rule=&quot;evenodd&quot;%3E%3Cg fill=&quot;%23ffffff&quot; fill-opacity=&quot;0.1&quot;%3E%3Cpath d=&quot;M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z&quot;/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')]" />
 
-      {/* Partículas - MAIS ESCURAS E MENOS TRANSPARENTES */}
+      {/* Partículas - MAIS VISÍVEIS (cor e opacidade aumentadas) */}
       {particles.map((p) => (
         <motion.div
           key={p.id}
-          className="absolute rounded-full bg-cyan-300/60" // Aumentado de /30 para /60
+          className="absolute rounded-full bg-cyan-300/50" // Aumentado de /30 para /50
           style={{
             width: p.size,
             height: p.size,
@@ -393,6 +393,15 @@ const Hero = () => {
           </motion.div>
         </div>
       </div>
+
+      {/* Indicador de scroll */}
+      <motion.div 
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+        animate={{ y: [0, 10, 0] }}
+        transition={{ duration: 2, repeat: Infinity }}
+      >
+
+      </motion.div>
     </section>
   )
 }

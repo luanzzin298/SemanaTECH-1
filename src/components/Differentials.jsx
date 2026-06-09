@@ -3,10 +3,10 @@ import {
   FaCheckCircle, FaRocket, FaRecycle, FaMedal, 
   FaChartLine, FaClock, FaAward, FaUsers, 
   FaLeaf, FaIndustry, FaBoxOpen, FaTruck,
-  FaArrowRight, FaShieldAlt, FaThumbsUp
+  FaArrowRight, FaShieldAlt, FaThumbsUp, FaTint
 } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useMemo } from 'react'
 
 // ============================================
 // DIFERENCIAIS ESPECÍFICOS DA H2B PLÁSTICOS
@@ -88,12 +88,139 @@ const scaleIn = {
 }
 
 // ============================================
+// PARTÍCULAS FLUTUANTES
+// ============================================
+const FloatingParticles = () => {
+  const particles = useMemo(() => Array.from({ length: 35 }, (_, i) => ({
+    id: i,
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    size: Math.random() * 2 + 1,
+    duration: Math.random() * 15 + 10,
+    delay: Math.random() * 5,
+  })), [])
+
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {particles.map((p) => (
+        <motion.div
+          key={p.id}
+          className="absolute rounded-full bg-cyan-300/15"
+          style={{
+            width: p.size,
+            height: p.size,
+            left: `${p.x}%`,
+            top: `${p.y}%`,
+          }}
+          animate={{
+            y: [0, -40, 0, 40, 0],
+            x: [0, 25, 0, -25, 0],
+            opacity: [0.1, 0.4, 0.1],
+          }}
+          transition={{
+            duration: p.duration,
+            repeat: Infinity,
+            delay: p.delay,
+            ease: "easeInOut",
+          }}
+        />
+      ))}
+    </div>
+  )
+}
+
+// ============================================
+// CARD DE DIFERENCIAL PREMIUM
+// ============================================
+const DifferentialCard = ({ diff, idx }) => {
+  const cardRef = useRef(null)
+  const [transform, setTransform] = useState('')
+  const [glowStyle, setGlowStyle] = useState({})
+  const rafRef = useRef(null)
+
+  const handleMouseMove = (e) => {
+    if (!cardRef.current) return
+    if (rafRef.current) cancelAnimationFrame(rafRef.current)
+    
+    rafRef.current = requestAnimationFrame(() => {
+      const rect = cardRef.current.getBoundingClientRect()
+      const x = e.clientX - rect.left
+      const y = e.clientY - rect.top
+      const centerX = rect.width / 2
+      const centerY = rect.height / 2
+      const rotateX = ((y - centerY) / centerY) * -3
+      const rotateY = ((x - centerX) / centerX) * 3
+      setTransform(`perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`)
+      setGlowStyle({
+        background: `radial-gradient(circle at ${(x / rect.width) * 100}% ${(y / rect.height) * 100}%, rgba(0, 212, 255, 0.12) 0%, rgba(0, 212, 255, 0) 70%)`
+      })
+    })
+  }
+
+  const handleMouseLeave = () => {
+    if (rafRef.current) cancelAnimationFrame(rafRef.current)
+    setTransform('perspective(1000px) rotateX(0deg) rotateY(0deg)')
+    setGlowStyle({})
+  }
+
+  useEffect(() => {
+    return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current) }
+  }, [])
+
+  return (
+    <motion.div
+      ref={cardRef}
+      variants={scaleIn}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{ transform }}
+      whileHover={{ y: -8 }}
+      className="group relative bg-white/5 backdrop-blur-md rounded-2xl overflow-hidden 
+                 shadow-lg hover:shadow-2xl hover:shadow-cyan-500/20 transition-all duration-500 
+                 border border-white/10 hover:border-cyan-400/50"
+    >
+      <div className="absolute inset-0 rounded-2xl pointer-events-none transition-opacity duration-300" style={glowStyle} />
+      
+      <div className="relative p-6">
+        {/* ÍCONE */}
+        <div className="relative mb-5">
+          <div className="bg-gradient-to-br from-cyan-400/20 to-blue-600/20 w-16 h-16 rounded-xl flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform duration-500">
+            <diff.icon className="text-2xl text-cyan-400" />
+          </div>
+          <div className="absolute inset-0 w-16 h-16 bg-cyan-400/20 blur-xl rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        </div>
+
+        {/* TÍTULO */}
+        <h3 className="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors duration-500">
+          {diff.title}
+        </h3>
+
+        {/* DESCRIÇÃO */}
+        <p className="text-gray-300 text-sm leading-relaxed mb-4">
+          {diff.description}
+        </p>
+
+        {/* STATUS */}
+        <div className="inline-block bg-gradient-to-r from-cyan-400/20 to-blue-600/20 backdrop-blur-sm px-3 py-1 rounded-full border border-cyan-400/30">
+          <span className="text-xs font-semibold text-cyan-300">
+            {diff.stats}
+          </span>
+        </div>
+
+        {/* LINHA ANIMADA */}
+        <div className="w-12 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 mt-5 rounded-full group-hover:w-24 transition-all duration-500" />
+      </div>
+    </motion.div>
+  )
+}
+
+// ============================================
 // COMPONENTE PRINCIPAL
 // ============================================
 
 const Differentials = () => {
   const sectionRef = useRef(null)
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 })
 
   // Efeito de mouse para gradiente dinâmico
   useEffect(() => {
@@ -122,26 +249,29 @@ const Differentials = () => {
     <section
       ref={sectionRef}
       id="differentials"
-      className="pt-24 pb-20 bg-gradient-to-br from-gray-50 via-white to-gray-50 overflow-hidden relative"
+      className="pt-24 pb-20 overflow-hidden relative min-h-screen bg-gradient-to-br from-[#001C30] via-[#001C30] to-[#0A4A6E]"
     >
-      {/* Fundo com gradiente dinâmico */}
+      {/* Fundo com gradiente dinâmico seguindo o mouse */}
       <div className="absolute inset-0 pointer-events-none">
         <div 
           className="absolute inset-0 opacity-30"
           style={{
-            background: `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(6, 182, 212, 0.08) 0%, rgba(6, 182, 212, 0) 50%)`
+            background: `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(6, 182, 212, 0.15) 0%, rgba(6, 182, 212, 0) 60%)`
           }}
         />
       </div>
 
-      {/* Padrão decorativo de fundo */}
+      {/* Partículas flutuantes */}
+      <FloatingParticles />
+
+      {/* Padrão industrial de fundo */}
       <div className="absolute inset-0 opacity-5 pointer-events-none">
-        <div className="absolute top-0 left-0 w-64 h-64 bg-cyan-400 rounded-full blur-3xl" />
+        <div className="absolute top-0 left-0 w-96 h-96 bg-cyan-400 rounded-full blur-3xl" />
         <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-600 rounded-full blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-cyan-300 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-500 rounded-full blur-3xl" />
       </div>
 
-      <div className="container mx-auto px-6 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 relative z-10">
 
         {/* ========== CABEÇALHO ========== */}
         <motion.div
@@ -155,19 +285,23 @@ const Differentials = () => {
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
-            className="inline-block bg-gradient-to-r from-cyan-100 to-blue-100 text-cyan-700 text-sm font-semibold
-                       px-4 py-1.5 rounded-full mb-4 shadow-sm"
+            className="inline-block px-5 py-2 rounded-full bg-gradient-to-r from-cyan-500/20 to-blue-600/20 backdrop-blur-md border border-cyan-400/30 text-cyan-300 font-semibold text-sm tracking-wider"
           >
             Vantagens Competitivas
           </motion.span>
 
-          <h2 className="text-3xl md:text-4xl font-bold text-[#001C30] mb-3">
-            Diferenciais <span className="bg-gradient-to-r from-cyan-500 to-blue-600 bg-clip-text text-transparent">Competitivos</span>
+          <h2 className="text-3xl md:text-5xl font-bold mb-4 mt-4">
+            <span className="bg-gradient-to-r from-white to-cyan-300 bg-clip-text text-transparent">
+              Diferenciais
+            </span>{' '}
+            <span className="bg-gradient-to-r from-cyan-400 via-cyan-300 to-blue-400 bg-clip-text text-transparent">
+              Competitivos
+            </span>
           </h2>
 
-          <div className="w-20 h-1 bg-gradient-to-r from-cyan-400 to-blue-600 mx-auto mb-4 rounded-full" />
+          <div className="w-20 h-1 bg-gradient-to-r from-cyan-400 to-blue-600 mx-auto mb-6 rounded-full" />
 
-          <p className="text-gray-600 text-base max-w-2xl mx-auto">
+          <p className="text-gray-300 text-base max-w-2xl mx-auto">
             Por que a H2B Plásticos é a escolha certa para sua empresa.
             Qualidade, inovação e sustentabilidade em cada solução.
           </p>
@@ -181,49 +315,7 @@ const Differentials = () => {
           className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16"
         >
           {DIFFERENTIALS_DATA.map((diff, idx) => (
-            <motion.div
-              key={idx}
-              variants={scaleIn}
-              whileHover={{ y: -8 }}
-              className="group bg-white rounded-2xl overflow-hidden 
-                         shadow-lg hover:shadow-2xl transition-all duration-500 
-                         border border-gray-100"
-            >
-              {/* EFEITO DE FUNDO */}
-              <div className="absolute inset-0 bg-gradient-to-br from-cyan-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-              {/* CONTEÚDO */}
-              <div className="relative p-6">
-
-                {/* ÍCONE */}
-                <div className="relative mb-5">
-                  <div className="bg-gradient-to-br from-cyan-100 to-blue-100 w-16 h-16 rounded-xl flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform duration-500">
-                    <diff.icon className="text-2xl text-cyan-600" />
-                  </div>
-                  <div className="absolute inset-0 w-16 h-16 bg-cyan-400/20 blur-xl rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                </div>
-
-                {/* TÍTULO */}
-                <h3 className="text-lg font-bold text-[#001C30] mb-2 group-hover:text-cyan-600 transition-colors duration-500">
-                  {diff.title}
-                </h3>
-
-                {/* DESCRIÇÃO */}
-                <p className="text-gray-500 text-sm leading-relaxed mb-4">
-                  {diff.description}
-                </p>
-
-                {/* STATUS */}
-                <div className="inline-block bg-gradient-to-r from-cyan-50 to-blue-50 px-3 py-1 rounded-full">
-                  <span className="text-xs font-semibold text-cyan-600">
-                    {diff.stats}
-                  </span>
-                </div>
-
-                {/* LINHA ANIMADA */}
-                <div className="w-12 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 mt-5 rounded-full group-hover:w-24 transition-all duration-500" />
-              </div>
-            </motion.div>
+            <DifferentialCard key={idx} diff={diff} idx={idx} />
           ))}
         </motion.div>
 
@@ -235,7 +327,7 @@ const Differentials = () => {
           viewport={{ once: true }}
           className="mb-16"
         >
-          <div className="relative bg-gradient-to-br from-[#001C30] to-[#0A4A6E] rounded-2xl overflow-hidden shadow-2xl">
+          <div className="relative bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-md rounded-2xl overflow-hidden shadow-2xl border border-white/20">
             
             {/* Elementos decorativos */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl" />
@@ -268,7 +360,7 @@ const Differentials = () => {
                   <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
                     <Link
                       to="/contato"
-                      className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-semibold px-6 py-3 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 group text-sm"
+                      className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-semibold px-6 py-3 rounded-full transition-all duration-300 shadow-lg shadow-cyan-500/30 hover:shadow-xl hover:-translate-y-0.5 group text-sm"
                     >
                       Solicitar Atendimento
                       <FaArrowRight className="group-hover:translate-x-1 transition-transform text-sm" />
@@ -288,7 +380,7 @@ const Differentials = () => {
                   <div className="grid grid-cols-2 gap-4">
                     
                     {/* Métrica 1 */}
-                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center hover:bg-white/15 transition-all duration-300 group">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center hover:bg-white/15 transition-all duration-300 group hover:border-cyan-400/50 border border-transparent">
                       <div className="text-3xl font-bold text-cyan-300 mb-1 group-hover:scale-110 transition-transform duration-300">
                         50+
                       </div>
@@ -301,7 +393,7 @@ const Differentials = () => {
                     </div>
 
                     {/* Métrica 2 */}
-                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center hover:bg-white/15 transition-all duration-300 group">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center hover:bg-white/15 transition-all duration-300 group hover:border-cyan-400/50 border border-transparent">
                       <div className="text-3xl font-bold text-cyan-300 mb-1 group-hover:scale-110 transition-transform duration-300">
                         98%
                       </div>
@@ -314,7 +406,7 @@ const Differentials = () => {
                     </div>
 
                     {/* Métrica 3 */}
-                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center hover:bg-white/15 transition-all duration-300 group">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center hover:bg-white/15 transition-all duration-300 group hover:border-cyan-400/50 border border-transparent">
                       <div className="text-3xl font-bold text-cyan-300 mb-1 group-hover:scale-110 transition-transform duration-300">
                         12+
                       </div>
@@ -327,7 +419,7 @@ const Differentials = () => {
                     </div>
 
                     {/* Métrica 4 */}
-                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center hover:bg-white/15 transition-all duration-300 group">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center hover:bg-white/15 transition-all duration-300 group hover:border-cyan-400/50 border border-transparent">
                       <div className="text-3xl font-bold text-cyan-300 mb-1 group-hover:scale-110 transition-transform duration-300">
                         24/7
                       </div>
@@ -353,7 +445,7 @@ const Differentials = () => {
           initial="hidden"
           whileInView="show"
           viewport={{ once: true }}
-          className="mb-16 flex flex-wrap justify-center gap-3"
+          className="flex flex-wrap justify-center gap-3"
         >
           {[
             { text: 'Certificação ISO 9001', icon: FaAward },
@@ -367,25 +459,15 @@ const Differentials = () => {
               key={idx}
               variants={scaleIn}
               whileHover={{ y: -3 }}
-              className="flex items-center gap-2 bg-white rounded-full px-3 py-1.5 shadow-md border border-cyan-100 hover:shadow-xl transition-all duration-500 hover:border-cyan-300"
+              className="flex items-center gap-2 bg-white/5 backdrop-blur-sm rounded-full px-4 py-2 shadow-md 
+                         border border-white/10 hover:shadow-xl transition-all duration-500 hover:border-cyan-400/50 group"
             >
-              <item.icon className="text-cyan-500 text-xs" />
-              <span className="text-gray-700 text-xs font-medium">
+              <item.icon className="text-cyan-400 text-xs group-hover:scale-110 transition-transform" />
+              <span className="text-gray-200 text-xs font-medium">
                 {item.text}
               </span>
             </motion.div>
           ))}
-        </motion.div>
-
-        {/* ========== CTA ========== */}
-        <motion.div
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true }}
-          className="text-center"
-        >
-         
         </motion.div>
 
       </div>
@@ -393,4 +475,4 @@ const Differentials = () => {
   )
 }
 
-export default Differentials
+export default Differentials  
