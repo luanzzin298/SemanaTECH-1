@@ -11,6 +11,7 @@ const LINKS = [
   { name: 'Serviços', path: '/servicos' },
   { name: 'Diferenciais', path: '/diferenciais' },
   { name: 'Sustentabilidade', path: '/sustentabilidade' },
+  { name: 'Trabalhe Conosco', path: '/trabalhe-conosco' }, // ADICIONADO
   { name: 'Contato', path: '/contato' },
 ]
 
@@ -43,8 +44,8 @@ const Navbar = () => {
   const location = useLocation()
 
   // 2. Otimização de performance com useMemo
-  const mainLinks = useMemo(() => LINKS.slice(0, 5), [])
-  const moreLinks = useMemo(() => LINKS.slice(5), [])
+  const mainLinks = useMemo(() => LINKS.slice(0, 6), []) // Mudei para 6 para incluir Sustentabilidade
+  const moreLinks = useMemo(() => LINKS.slice(6), []) // Agora pega Trabalhe Conosco e Contato
 
   // Debounce/Throttle simplificado para o scroll usando useCallback
   const handleScroll = useCallback(() => {
@@ -52,7 +53,7 @@ const Navbar = () => {
   }, [])
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll, { passive: true }) // passive: true melhora performance de scroll
+    window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [handleScroll])
 
@@ -71,9 +72,9 @@ const Navbar = () => {
   useEffect(() => {
     setIsOpen(false)
     setDropdownOpen(false)
-  }, [location.pathname]) // Dependência específica para evitar execuções desnecessárias
+  }, [location.pathname])
 
-  // Classes utilitárias compartilhadas para evitar repetição de código (DRY)
+  // Classes utilitárias compartilhadas
   const navLinkBaseClass = "relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 flex items-center gap-1"
 
   return (
@@ -107,7 +108,7 @@ const Navbar = () => {
                     src="https://h2bplasticos.com.br/_next/image?url=%2Fimagens%2Flogo-h2b-removebg-preview.png&w=1080&q=75"
                     alt="Logo H2B Plásticos"
                     className="w-full h-full object-contain"
-                    loading="eager" // Carrega a logo imediatamente por ser um elemento crítico (LCP)
+                    loading="eager"
                   />
                 </div>
                 <div className="flex flex-col">
@@ -146,51 +147,53 @@ const Navbar = () => {
               ))}
 
               {/* Dropdown "Mais" */}
-              <div className="relative" ref={dropdownRef}>
-                <button
-                  onClick={() => setDropdownOpen(prev => !prev)}
-                  aria-expanded={dropdownOpen}
-                  aria-haspopup="true"
-                  className={`${navLinkBaseClass} ${dropdownOpen ? 'text-cyan-300 bg-white/10' : 'text-gray-300 hover:text-cyan-300 hover:bg-white/5'}`}
-                >
-                  <span>Mais</span>
-                  <motion.div
-                    animate={{ rotate: dropdownOpen ? 180 : 0 }}
-                    transition={{ duration: 0.3 }}
+              {moreLinks.length > 0 && (
+                <div className="relative" ref={dropdownRef}>
+                  <button
+                    onClick={() => setDropdownOpen(prev => !prev)}
+                    aria-expanded={dropdownOpen}
+                    aria-haspopup="true"
+                    className={`${navLinkBaseClass} ${dropdownOpen ? 'text-cyan-300 bg-white/10' : 'text-gray-300 hover:text-cyan-300 hover:bg-white/5'}`}
                   >
-                    <FaChevronDown className="text-xs" />
-                  </motion.div>
-                </button>
-                
-                <AnimatePresence>
-                  {dropdownOpen && (
+                    <span>Mais</span>
                     <motion.div
-                      variants={DROPDOWN_VARIANTS}
-                      initial="hidden"
-                      animate="visible"
-                      exit="exit"
-                      className="absolute top-full right-0 mt-2 w-48 bg-[#001C30]/95 backdrop-blur-xl rounded-xl shadow-2xl border border-cyan-400/20 overflow-hidden"
+                      animate={{ rotate: dropdownOpen ? 180 : 0 }}
+                      transition={{ duration: 0.3 }}
                     >
-                      <div className="py-2" role="menu">
-                        {moreLinks.map((link) => (
-                          <NavLink
-                            key={link.path}
-                            to={link.path}
-                            role="menuitem"
-                            className={({ isActive }) =>
-                              `block px-4 py-2.5 text-sm transition-all duration-300 ${
-                                isActive ? 'text-cyan-300 bg-white/10 font-medium' : 'text-gray-300 hover:text-cyan-300 hover:bg-white/5'
-                              }`
-                            }
-                          >
-                            {link.name}
-                          </NavLink>
-                        ))}
-                      </div>
+                      <FaChevronDown className="text-xs" />
                     </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
+                  </button>
+                  
+                  <AnimatePresence>
+                    {dropdownOpen && (
+                      <motion.div
+                        variants={DROPDOWN_VARIANTS}
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                        className="absolute top-full right-0 mt-2 w-48 bg-[#001C30]/95 backdrop-blur-xl rounded-xl shadow-2xl border border-cyan-400/20 overflow-hidden z-50"
+                      >
+                        <div className="py-2" role="menu">
+                          {moreLinks.map((link) => (
+                            <NavLink
+                              key={link.path}
+                              to={link.path}
+                              role="menuitem"
+                              className={({ isActive }) =>
+                                `block px-4 py-2.5 text-sm transition-all duration-300 ${
+                                  isActive ? 'text-cyan-300 bg-white/10 font-medium' : 'text-gray-300 hover:text-cyan-300 hover:bg-white/5'
+                                }`
+                              }
+                            >
+                              {link.name}
+                            </NavLink>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              )}
             </div>
 
             {/* Botão Mobile */}

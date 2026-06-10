@@ -1,32 +1,20 @@
 import { motion } from 'framer-motion'
-import { FaFacebook, FaInstagram, FaLinkedin, FaYoutube, FaEnvelope } from 'react-icons/fa'
+import { FaFacebook, FaInstagram, FaEnvelope } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 
 const Footer = () => {
   const socialLinks = [
     { 
       icon: FaFacebook, 
-      href: 'https://facebook.com/h2bplasticos', 
+      href: 'https://www.facebook.com/h2bplasticos/?locale=pt_BR', 
       label: 'Facebook',
       color: '#1877f2'
     },
     { 
       icon: FaInstagram, 
-      href: 'https://instagram.com/h2bplasticos', 
+      href: 'https://www.instagram.com/h2bplasticos', 
       label: 'Instagram',
       color: '#e4405f'
-    },
-    { 
-      icon: FaLinkedin, 
-      href: 'https://linkedin.com/company/h2bplasticos', 
-      label: 'LinkedIn',
-      color: '#0a66c2'
-    },
-    { 
-      icon: FaYoutube, 
-      href: 'https://youtube.com/@h2bplasticos', 
-      label: 'YouTube',
-      color: '#ff0000'
     },
   ]
 

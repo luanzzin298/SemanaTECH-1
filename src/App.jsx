@@ -13,6 +13,7 @@ import Sustainability from './components/Sustainability'
 import Testimonials from './components/Testimonials'
 import PostDetail from './components/PostDetail'
 import Contact from './components/Contact'
+import TrabalheConosco from './components/TrabalheConosco'
 
 import PoliticaPrivacidade from './components/PoliticaPrivacidade'
 import PoliticaCookies from './components/PoliticaCookies'
@@ -36,6 +37,7 @@ function App() {
           <Route path="/diferenciais" element={<Differentials />} />
           <Route path="/sustentabilidade" element={<Sustainability />} />
           <Route path="/depoimentos" element={<Testimonials />} />
+          <Route path="/trabalhe-conosco" element={<TrabalheConosco />} />
           <Route path="/contato" element={<Contact />} />
 
           {/* Blog */}

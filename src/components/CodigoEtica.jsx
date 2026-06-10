@@ -10,7 +10,6 @@ import {
   FaRegLightbulb,
   FaHeart,
   FaGlobeAmericas,
-  FaStar,
   FaChartLine,
   FaCheckCircle,
   FaExclamationTriangle,
@@ -18,12 +17,36 @@ import {
   FaEnvelope,
   FaLock
 } from 'react-icons/fa'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 
 const CodigoEtica = () => {
   const [activeSection, setActiveSection] = useState('missao')
+  const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 })
   const { scrollYProgress } = useScroll()
-  const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0.8])
+  const sectionRef = useRef(null)
+
+  // Efeito de mouse para gradiente dinâmico
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      const x = (e.clientX / window.innerWidth) * 100
+      const y = (e.clientY / window.innerHeight) * 100
+      setMousePosition({ x, y })
+    }
+    window.addEventListener('mousemove', handleMouseMove)
+    return () => window.removeEventListener('mousemove', handleMouseMove)
+  }, [])
+
+  // Scroll para o topo
+  useEffect(() => {
+    setTimeout(() => {
+      if (sectionRef.current) {
+        const offset = 70
+        const elementPosition = sectionRef.current.getBoundingClientRect().top
+        const offsetPosition = elementPosition + window.pageYOffset - offset
+        window.scrollTo({ top: offsetPosition, behavior: 'smooth' })
+      }
+    }, 100)
+  }, [])
 
   // Smooth scroll para seções
   const scrollToSection = (sectionId) => {
@@ -74,44 +97,32 @@ const CodigoEtica = () => {
     {
       icon: FaBalanceScale,
       title: 'Integridade',
-      description: 'Agimos com honestidade, transparência e justiça em todas as relações.',
-      color: 'from-blue-500 to-blue-600',
-      bgColor: 'bg-blue-50'
+      description: 'Agimos com honestidade, transparência e justiça em todas as relações.'
     },
     {
       icon: FaLeaf,
       title: 'Sustentabilidade',
-      description: 'Compromisso com o meio ambiente e a economia circular.',
-      color: 'from-green-500 to-green-600',
-      bgColor: 'bg-green-50'
+      description: 'Compromisso com o meio ambiente e a economia circular.'
     },
     {
       icon: FaUsers,
       title: 'Respeito à Diversidade',
-      description: 'Valorizamos a diversidade e tratamos todos com dignidade e igualdade.',
-      color: 'from-purple-500 to-purple-600',
-      bgColor: 'bg-purple-50'
+      description: 'Valorizamos a diversidade e tratamos todos com dignidade e igualdade.'
     },
     {
       icon: FaHandshake,
       title: 'Excelência',
-      description: 'Buscamos a melhoria contínua em tudo o que fazemos.',
-      color: 'from-cyan-500 to-cyan-600',
-      bgColor: 'bg-cyan-50'
+      description: 'Buscamos a melhoria contínua em tudo o que fazemos.'
     },
     {
       icon: FaRegLightbulb,
       title: 'Inovação',
-      description: 'Estimulamos a criatividade e buscamos soluções inovadoras.',
-      color: 'from-yellow-500 to-yellow-600',
-      bgColor: 'bg-yellow-50'
+      description: 'Estimulamos a criatividade e buscamos soluções inovadoras.'
     },
     {
       icon: FaHeart,
       title: 'Empatia',
-      description: 'Colocamo-nos no lugar do outro para construir relações mais humanas.',
-      color: 'from-red-500 to-red-600',
-      bgColor: 'bg-red-50'
+      description: 'Colocamo-nos no lugar do outro para construir relações mais humanas.'
     }
   ]
 
@@ -167,33 +178,53 @@ const CodigoEtica = () => {
   ]
 
   return (
-    <section className="pt-20 pb-20 bg-gradient-to-b from-gray-50 to-white min-h-screen">
+    <section
+      ref={sectionRef}
+      className="pt-24 pb-20 overflow-hidden relative min-h-screen bg-gradient-to-br from-[#001C30] via-[#001C30] to-[#0A4A6E]"
+    >
+      {/* Fundo com gradiente dinâmico seguindo o mouse */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div 
+          className="absolute inset-0 opacity-30"
+          style={{
+            background: `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(6, 182, 212, 0.15) 0%, rgba(6, 182, 212, 0) 60%)`
+          }}
+        />
+      </div>
+
+      {/* Padrão industrial de fundo */}
+      <div className="absolute inset-0 opacity-5 pointer-events-none">
+        <div className="absolute top-0 left-0 w-96 h-96 bg-cyan-400 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-600 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-500 rounded-full blur-3xl" />
+      </div>
+
       {/* Barra de progresso de scroll */}
       <motion.div 
-        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-400 to-cyan-600 z-50"
+        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-400 to-blue-600 z-50"
         style={{ scaleX: scrollYProgress, transformOrigin: '0%' }}
       />
 
-      <div className="container mx-auto px-4 md:px-6">
+      <div className="container mx-auto px-4 md:px-6 relative z-10">
         <motion.div
           initial="hidden"
           animate="visible"
           variants={fadeUp}
           className="max-w-6xl mx-auto"
         >
-          {/* Header com gradiente */}
+          {/* Header */}
           <div className="relative mb-12">
             {/* Badge de última atualização */}
-            <div className="absolute top-0 right-0 bg-cyan-100 text-cyan-700 text-xs font-semibold px-3 py-1 rounded-full">
+            <div className="absolute top-0 right-0 bg-cyan-500/20 backdrop-blur-sm text-cyan-300 text-xs font-semibold px-3 py-1 rounded-full border border-cyan-400/30">
               📅 Atualizado: {new Date().toLocaleDateString('pt-BR')}
             </div>
 
-            {/* Botão voltar melhorado */}
+            {/* Botão voltar */}
             <Link
               to="/"
-              className="inline-flex items-center gap-2 text-cyan-600 hover:text-cyan-700 mb-8 transition-all duration-300 group"
+              className="inline-flex items-center gap-2 text-cyan-400 hover:text-cyan-300 mb-8 transition-all duration-300 group"
             >
-              <div className="bg-cyan-100 p-2 rounded-full group-hover:bg-cyan-200 transition-colors">
+              <div className="bg-cyan-500/20 backdrop-blur-sm p-2 rounded-full group-hover:bg-cyan-500/30 transition-colors border border-cyan-400/30">
                 <FaArrowLeft className="text-sm" />
               </div>
               <span className="font-medium">Voltar para o início</span>
@@ -208,27 +239,32 @@ const CodigoEtica = () => {
                 className="inline-block mb-6"
               >
                 <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-cyan-600 rounded-full blur-xl opacity-50"></div>
-                  <div className="relative bg-gradient-to-r from-cyan-500 to-cyan-600 p-5 rounded-full shadow-lg">
+                  <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-blue-600 rounded-full blur-xl opacity-50"></div>
+                  <div className="relative bg-gradient-to-r from-cyan-500 to-blue-600 p-5 rounded-full shadow-lg">
                     <FaHandshake className="text-4xl text-white" />
                   </div>
                 </div>
               </motion.div>
 
               <motion.h1 
-                className="text-5xl md:text-6xl lg:text-7xl font-bold mb-4 bg-gradient-to-r from-[#001C30] to-cyan-600 bg-clip-text text-transparent"
+                className="text-5xl md:text-6xl lg:text-7xl font-bold mb-4"
                 variants={fadeUp}
               >
-                Código de Ética
+                <span className="bg-gradient-to-r from-white to-cyan-300 bg-clip-text text-transparent">
+                  Código de
+                </span>{' '}
+                <span className="bg-gradient-to-r from-cyan-400 via-cyan-300 to-blue-400 bg-clip-text text-transparent">
+                  Ética
+                </span>
               </motion.h1>
               
               <motion.div 
-                className="w-24 h-1 bg-gradient-to-r from-cyan-400 to-cyan-600 mx-auto mb-6 rounded-full"
+                className="w-24 h-1 bg-gradient-to-r from-cyan-400 to-blue-600 mx-auto mb-6 rounded-full"
                 variants={fadeUp}
               />
               
               <motion.p 
-                className="text-gray-600 text-lg max-w-2xl mx-auto"
+                className="text-gray-300 text-lg max-w-2xl mx-auto"
                 variants={fadeUp}
               >
                 Nossos princípios e valores guiam todas as nossas ações e decisões
@@ -236,21 +272,21 @@ const CodigoEtica = () => {
             </div>
 
             {/* Menu de navegação rápida */}
-            <div className="sticky top-20 z-40 bg-white/80 backdrop-blur-md rounded-2xl shadow-sm border border-gray-100 p-2 mb-12">
+            <div className="sticky top-20 z-40 bg-white/5 backdrop-blur-md rounded-2xl shadow-sm border border-white/10 p-2 mb-12">
               <div className="flex flex-wrap justify-center gap-2">
                 {[
-                  { id: 'missao', label: '🎯 Missão' },
-                  { id: 'valores', label: '💎 Valores' },
-                  { id: 'compromissos', label: '📋 Compromissos' },
-                  { id: 'canais', label: '📢 Canais' }
+                  { id: 'missao', label: 'Missão' },
+                  { id: 'valores', label: 'Valores' },
+                  { id: 'compromissos', label: 'Compromissos' },
+                  { id: 'canais', label: 'Canais' }
                 ].map((item) => (
                   <button
                     key={item.id}
                     onClick={() => scrollToSection(item.id)}
                     className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300
                       ${activeSection === item.id 
-                        ? 'bg-gradient-to-r from-cyan-500 to-cyan-600 text-white shadow-md' 
-                        : 'text-gray-600 hover:bg-gray-100'
+                        ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md' 
+                        : 'text-gray-300 hover:bg-white/10'
                       }`}
                   >
                     {item.label}
@@ -270,19 +306,18 @@ const CodigoEtica = () => {
               variants={fadeUp}
               className="scroll-mt-24"
             >
-              <div className="bg-gradient-to-br from-cyan-50 to-white rounded-3xl p-10 md:p-12 shadow-xl border border-cyan-100">
-                <div className="inline-block px-4 py-2 bg-cyan-100 text-cyan-700 rounded-full text-sm font-semibold mb-6">
-                  📖 Propósito
+              <div className="bg-white/5 backdrop-blur-md rounded-3xl p-10 md:p-12 shadow-xl border border-white/10 hover:border-cyan-400/50 transition-all duration-300">
+                <div className="inline-block px-4 py-2 bg-cyan-500/20 backdrop-blur-sm text-cyan-300 rounded-full text-sm font-semibold mb-6 border border-cyan-400/30">
+                  Propósito
                 </div>
-                <h2 className="text-3xl md:text-4xl font-bold text-[#001C30] mb-6">
+                <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
                   Nossa Missão
                 </h2>
-                <p className="text-gray-700 text-xl md:text-2xl leading-relaxed italic font-light">
+                <p className="text-gray-300 text-xl md:text-2xl leading-relaxed italic font-light">
                   "Transformar o setor plástico com soluções inovadoras, sustentáveis e éticas, 
                   gerando valor para nossos clientes, colaboradores e sociedade."
                 </p>
-                <div className="mt-8 flex items-center gap-2 text-cyan-600">
-                  <FaStar className="text-yellow-400" />
+                <div className="mt-8 flex items-center gap-2 text-cyan-400">
                   <span className="text-sm">Compromisso com a excelência</span>
                 </div>
               </div>
@@ -298,13 +333,13 @@ const CodigoEtica = () => {
               className="scroll-mt-24"
             >
               <div className="text-center mb-10">
-                <div className="inline-block px-4 py-2 bg-cyan-100 text-cyan-700 rounded-full text-sm font-semibold mb-4">
-                  💎 Pilares
+                <div className="inline-block px-4 py-2 bg-cyan-500/20 backdrop-blur-sm text-cyan-300 rounded-full text-sm font-semibold mb-4 border border-cyan-400/30">
+                  Pilares
                 </div>
-                <h2 className="text-3xl md:text-4xl font-bold text-[#001C30]">
+                <h2 className="text-3xl md:text-4xl font-bold text-white">
                   Nossos Valores
                 </h2>
-                <div className="w-20 h-0.5 bg-gradient-to-r from-cyan-400 to-cyan-600 mx-auto mt-4 rounded-full" />
+                <div className="w-20 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-600 mx-auto mt-4 rounded-full" />
               </div>
 
               <motion.div
@@ -318,14 +353,14 @@ const CodigoEtica = () => {
                   <motion.div
                     key={idx}
                     variants={fadeUp}
-                    whileHover={{ y: -8, scale: 1.02 }}
-                    className={`${valor.bgColor} rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100`}
+                    whileHover={{ y: -8 }}
+                    className="bg-white/5 backdrop-blur-md rounded-2xl p-6 shadow-md hover:shadow-cyan-500/20 transition-all duration-300 border border-white/10 hover:border-cyan-400/50 group"
                   >
-                    <div className={`bg-gradient-to-r ${valor.color} w-14 h-14 rounded-2xl flex items-center justify-center mb-4 shadow-lg`}>
-                      <valor.icon className="text-white text-2xl" />
+                    <div className="bg-gradient-to-br from-cyan-400/20 to-blue-600/20 w-14 h-14 rounded-2xl flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                      <valor.icon className="text-cyan-400 text-2xl" />
                     </div>
-                    <h3 className="text-xl font-bold text-gray-800 mb-2">{valor.title}</h3>
-                    <p className="text-gray-600 text-sm leading-relaxed">{valor.description}</p>
+                    <h3 className="text-xl font-bold text-white mb-2">{valor.title}</h3>
+                    <p className="text-gray-300 text-sm leading-relaxed">{valor.description}</p>
                   </motion.div>
                 ))}
               </motion.div>
@@ -340,15 +375,15 @@ const CodigoEtica = () => {
               variants={fadeUp}
               className="scroll-mt-24"
             >
-              <div className="bg-white rounded-3xl p-8 md:p-10 shadow-lg border border-gray-100">
+              <div className="bg-white/5 backdrop-blur-md rounded-3xl p-8 md:p-10 shadow-lg border border-white/10 hover:border-cyan-400/50 transition-all duration-300">
                 <div className="text-center mb-10">
-                  <div className="inline-block px-4 py-2 bg-cyan-100 text-cyan-700 rounded-full text-sm font-semibold mb-4">
-                    📋 Diretrizes
+                  <div className="inline-block px-4 py-2 bg-cyan-500/20 backdrop-blur-sm text-cyan-300 rounded-full text-sm font-semibold mb-4 border border-cyan-400/30">
+                    Diretrizes
                   </div>
-                  <h2 className="text-3xl md:text-4xl font-bold text-[#001C30]">
+                  <h2 className="text-3xl md:text-4xl font-bold text-white">
                     Compromissos Éticos
                   </h2>
-                  <div className="w-20 h-0.5 bg-gradient-to-r from-cyan-400 to-cyan-600 mx-auto mt-4 rounded-full" />
+                  <div className="w-20 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-600 mx-auto mt-4 rounded-full" />
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-4">
@@ -359,30 +394,30 @@ const CodigoEtica = () => {
                       whileInView={{ opacity: 1, x: 0 }}
                       transition={{ delay: idx * 0.05 }}
                       viewport={{ once: true }}
-                      className="flex items-start gap-3 p-4 rounded-xl hover:bg-gray-50 transition-colors group"
+                      className="flex items-start gap-3 p-4 rounded-xl hover:bg-white/5 transition-colors group"
                     >
                       <div className="flex-shrink-0">
-                        <div className="bg-green-100 p-2 rounded-full group-hover:bg-green-200 transition-colors">
-                          <comp.icon className="text-green-600 text-sm" />
+                        <div className="bg-cyan-500/20 p-2 rounded-full group-hover:bg-cyan-500/30 transition-colors">
+                          <comp.icon className="text-cyan-400 text-sm" />
                         </div>
                       </div>
                       <div className="flex-1">
-                        <p className="text-gray-700 leading-relaxed">{comp.text}</p>
-                        <span className="text-xs text-cyan-600 mt-1 inline-block">{comp.category}</span>
+                        <p className="text-gray-300 leading-relaxed">{comp.text}</p>
+                        <span className="text-xs text-cyan-400 mt-1 inline-block">{comp.category}</span>
                       </div>
                     </motion.div>
                   ))}
                 </div>
 
                 {/* Destaque */}
-                <div className="mt-8 bg-gradient-to-r from-cyan-50 to-blue-50 rounded-2xl p-6 border border-cyan-100">
+                <div className="mt-8 bg-gradient-to-r from-cyan-500/10 to-blue-600/10 rounded-2xl p-6 border border-cyan-400/30">
                   <div className="flex items-start gap-4">
-                    <div className="bg-cyan-500 p-3 rounded-xl">
-                      <FaStar className="text-white text-xl" />
+                    <div className="bg-gradient-to-r from-cyan-500 to-blue-600 p-3 rounded-xl">
+                      <FaHandshake className="text-white text-xl" />
                     </div>
                     <div>
-                      <h3 className="text-lg font-bold text-cyan-800 mb-2">Compromisso da Liderança</h3>
-                      <p className="text-cyan-700">
+                      <h3 className="text-lg font-bold text-cyan-300 mb-2">Compromisso da Liderança</h3>
+                      <p className="text-gray-300">
                         Nossa diretoria e gestores são os primeiros responsáveis por garantir o cumprimento deste Código, 
                         liderando pelo exemplo e promovendo uma cultura ética em toda a organização.
                       </p>
@@ -392,7 +427,7 @@ const CodigoEtica = () => {
               </div>
             </motion.section>
 
-            {/* Seção Canais de Denúncia - APENAS DECORATIVOS */}
+            {/* Seção Canais de Denúncia */}
             <motion.section
               id="canais"
               initial="hidden"
@@ -401,15 +436,15 @@ const CodigoEtica = () => {
               variants={fadeUp}
               className="scroll-mt-24"
             >
-              <div className="bg-gradient-to-br from-gray-900 to-[#001C30] rounded-3xl p-10 md:p-12 shadow-2xl text-white">
+              <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-md rounded-3xl p-10 md:p-12 shadow-2xl border border-white/20">
                 <div className="text-center mb-10">
-                  <div className="inline-block px-4 py-2 bg-cyan-500/20 text-cyan-300 rounded-full text-sm font-semibold mb-4 backdrop-blur-sm">
-                    🔒 Canais Seguros
+                  <div className="inline-block px-4 py-2 bg-cyan-500/20 backdrop-blur-sm text-cyan-300 rounded-full text-sm font-semibold mb-4 border border-cyan-400/30">
+                    Canais Seguros
                   </div>
-                  <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                  <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
                     Canais de Denúncia
                   </h2>
-                  <div className="w-20 h-0.5 bg-gradient-to-r from-cyan-400 to-cyan-600 mx-auto mt-4 rounded-full" />
+                  <div className="w-20 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-600 mx-auto mt-4 rounded-full" />
                   <p className="text-gray-300 mt-4 max-w-2xl mx-auto">
                     Disponibilizamos canais seguros e confidenciais para relatar qualquer violação ao nosso Código de Ética
                   </p>
@@ -419,19 +454,18 @@ const CodigoEtica = () => {
                   {canaisDenuncia.map((canal, idx) => (
                     <motion.div
                       key={idx}
-                      whileHover={{ y: -5, scale: 1.02 }}
-                      className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-center hover:bg-white/20 transition-all duration-300 cursor-default"
+                      whileHover={{ y: -5 }}
+                      className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 text-center hover:bg-white/10 transition-all duration-300 hover:border-cyan-400/50 border border-transparent cursor-default"
                     >
-                      <div className="bg-cyan-500/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <canal.icon className="text-3xl text-cyan-300" />
+                      <div className="bg-gradient-to-br from-cyan-400/20 to-blue-600/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <canal.icon className="text-3xl text-cyan-400" />
                       </div>
-                      <h3 className="font-semibold text-lg mb-2">{canal.title}</h3>
+                      <h3 className="font-semibold text-white text-lg mb-2">{canal.title}</h3>
                       <p className="text-cyan-300 text-sm break-all select-all">
                         {canal.value}
                       </p>
-                      {/* Indicador visual de que é apenas para exibição */}
                       <div className="mt-3 text-xs text-gray-400 flex items-center justify-center gap-1">
-                        <FaLock className="text-[10px]" />
+                        <FaLock className="text-[10px] text-cyan-400" />
                         <span>Informação segura</span>
                       </div>
                     </motion.div>
@@ -447,16 +481,16 @@ const CodigoEtica = () => {
             </motion.section>
 
             {/* Footer da página */}
-            <div className="text-center pt-8 border-t border-gray-200">
-              <p className="text-gray-500 text-sm">
+            <div className="text-center pt-8 border-t border-white/10">
+              <p className="text-gray-400 text-sm">
                 © {new Date().getFullYear()} H2B Plásticos - Código de Ética e Conduta
               </p>
               <div className="flex justify-center gap-4 mt-4">
-                <Link to="/politica-privacidade" className="text-xs text-gray-400 hover:text-cyan-600 transition-colors">
+                <Link to="/politica-privacidade" className="text-xs text-gray-400 hover:text-cyan-400 transition-colors">
                   Política de Privacidade
                 </Link>
-                <span className="text-gray-300">|</span>
-                <Link to="/termos-uso" className="text-xs text-gray-400 hover:text-cyan-600 transition-colors">
+                <span className="text-gray-500">|</span>
+                <Link to="/termos-uso" className="text-xs text-gray-400 hover:text-cyan-400 transition-colors">
                   Termos de Uso
                 </Link>
               </div>

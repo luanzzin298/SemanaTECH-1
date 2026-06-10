@@ -64,7 +64,7 @@ const scaleIn = {
 }
 
 // ============================================
-// CARD DE CONTATO PREMIUM
+// CARD DE CONTATO PREMIUM (TAMANHO AUMENTADO)
 // ============================================
 const ContactCard = ({ item, idx }) => {
   const cardRef = useRef(null)
@@ -109,7 +109,7 @@ const ContactCard = ({ item, idx }) => {
       onMouseLeave={handleMouseLeave}
       style={{ transform }}
       whileHover={{ y: -4 }}
-      className="group bg-white/5 backdrop-blur-md rounded-2xl p-6 shadow-md hover:shadow-xl 
+      className="group bg-white/5 backdrop-blur-md rounded-2xl p-7 shadow-md hover:shadow-xl 
                  hover:shadow-cyan-500/20 transition-all duration-500 border border-white/10 
                  hover:border-cyan-400/50 relative overflow-hidden"
     >
@@ -121,26 +121,26 @@ const ContactCard = ({ item, idx }) => {
         </div>
       )}
       
-      <div className="relative flex gap-4 items-start">
-        <div className="bg-gradient-to-br from-cyan-400/20 to-blue-600/20 w-14 h-14 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
-          <item.icon className="text-xl text-cyan-400" />
+      <div className="relative flex gap-5 items-start">
+        <div className="bg-gradient-to-br from-cyan-400/20 to-blue-600/20 w-16 h-16 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
+          <item.icon className="text-2xl text-cyan-400" />
         </div>
         <div className="flex-1">
-          <h3 className="font-bold text-white text-lg mb-1 group-hover:text-cyan-400 transition-colors">
+          <h3 className="font-bold text-white text-xl mb-2 group-hover:text-cyan-400 transition-colors">
             {item.title}
           </h3>
-          <p className="text-gray-300 text-sm leading-relaxed">{item.content}</p>
+          <p className="text-gray-300 text-base leading-relaxed">{item.content}</p>
           {item.note && (
-            <p className="text-xs text-gray-400 mt-1">{item.note}</p>
+            <p className="text-sm text-gray-400 mt-2">{item.note}</p>
           )}
           {item.link && (
             <a
               href={item.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-sm transition-all mt-2 font-medium text-cyan-400 hover:text-cyan-300 hover:gap-2"
+              className="inline-flex items-center gap-1 text-base transition-all mt-3 font-medium text-cyan-400 hover:text-cyan-300 hover:gap-2"
             >
-              {item.linkText} <FaExternalLinkAlt size={10} />
+              {item.linkText} <FaExternalLinkAlt size={12} />
             </a>
           )}
         </div>
@@ -387,214 +387,225 @@ const Contact = () => {
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-8">
-          {/* Informações de contato */}
-          <div className="space-y-5">
+        <div className="grid lg:grid-cols-2 gap-8 items-stretch">
+          {/* COLUNA ESQUERDA: Informações de contato - TAMANHO AUMENTADO */}
+          <div className="space-y-5 h-full">
             {CONTACT_INFO.map((item, idx) => (
               <ContactCard key={idx} item={item} idx={idx} />
             ))}
 
-            {/* Informação adicional de localização */}
+            {/* Informação adicional de localização - TAMANHO AUMENTADO */}
             <motion.div
               variants={scaleIn}
               initial="hidden"
               animate="show"
               transition={{ delay: 0.5 }}
-              className="bg-white/5 backdrop-blur-md rounded-xl p-4 text-center border border-white/10 hover:border-cyan-400/50 transition-all duration-300"
+              className="bg-white/5 backdrop-blur-md rounded-2xl p-6 text-center border border-white/10 hover:border-cyan-400/50 transition-all duration-300"
             >
-              <div className="flex items-center justify-center gap-2 mb-2">
-                <FaMapMarkerAlt className="text-cyan-400 text-sm" />
-                <span className="font-semibold text-white text-sm">Região de atendimento:</span>
+              <div className="flex items-center justify-center gap-2 mb-3">
+                <FaMapMarkerAlt className="text-cyan-400 text-base" />
+                <span className="font-semibold text-white text-base">Região de atendimento:</span>
               </div>
-              <p className="text-gray-300 text-sm">
+              <p className="text-gray-300 text-base">
                 Muriaé, Zona da Mata Mineira e todo território nacional
               </p>
-              <p className="text-xs text-cyan-400 mt-2 font-medium">
+              <p className="text-sm text-cyan-400 mt-3 font-medium">
                 Fácil acesso pela BR-116
               </p>
             </motion.div>
           </div>
 
-          {/* Formulário de contato */}
-          <motion.div
-            ref={formRef}
-            variants={scaleIn}
-            initial="hidden"
-            animate="show"
-            transition={{ delay: 0.3 }}
-            className="bg-white/5 backdrop-blur-md rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl hover:shadow-cyan-500/20 transition-all duration-500 border border-white/10 hover:border-cyan-400/50 scroll-mt-28"
-            id="formulario-contato"
-          >
-            <div className="p-6 md:p-8">
-              <div className="text-center mb-6">
-                <h3 className="text-xl font-bold text-white mb-2">
-                  Envie uma mensagem rápida
-                </h3>
-                <p className="text-gray-300 text-sm">
-                  Preencha o formulário e enviaremos sua mensagem
-                </p>
-                <div className="w-12 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 mx-auto mt-3 rounded-full" />
+          {/* COLUNA DIREITA: Formulário + Mapa - LADO A LADO SEM SOBRAS */}
+          <div className="flex flex-col gap-6 h-full">
+            {/* Formulário de contato */}
+            <motion.div
+              ref={formRef}
+              variants={scaleIn}
+              initial="hidden"
+              animate="show"
+              transition={{ delay: 0.3 }}
+              className="bg-white/5 backdrop-blur-md rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl hover:shadow-cyan-500/20 transition-all duration-500 border border-white/10 hover:border-cyan-400/50 scroll-mt-28"
+              id="formulario-contato"
+            >
+              <div className="p-6 md:p-8">
+                <div className="text-center mb-6">
+                  <h3 className="text-xl font-bold text-white mb-2">
+                    Envie uma mensagem rápida
+                  </h3>
+                  <p className="text-gray-300 text-sm">
+                    Preencha o formulário e enviaremos sua mensagem
+                  </p>
+                  <div className="w-12 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 mx-auto mt-3 rounded-full" />
+                </div>
+
+                <form onSubmit={handleSubmit} className="space-y-5">
+                  <div>
+                    <label htmlFor="name" className="block text-sm font-semibold text-gray-200 mb-2">
+                      Nome completo *
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      placeholder="Seu nome completo"
+                      value={form.name}
+                      onChange={handleChange}
+                      className={`w-full p-3 bg-white/10 backdrop-blur-sm border rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition-all text-sm text-white placeholder:text-gray-400 ${errors.name ? 'border-red-500' : 'border-white/20'}`}
+                    />
+                    {errors.name && <p className="text-red-400 text-xs mt-1">{errors.name}</p>}
+                  </div>
+
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-semibold text-gray-200 mb-2">
+                      E-mail *
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      placeholder="seu@email.com"
+                      value={form.email}
+                      onChange={handleChange}
+                      className={`w-full p-3 bg-white/10 backdrop-blur-sm border rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition-all text-sm text-white placeholder:text-gray-400 ${errors.email ? 'border-red-500' : 'border-white/20'}`}
+                    />
+                    {errors.email && <p className="text-red-400 text-xs mt-1">{errors.email}</p>}
+                  </div>
+
+                  <div>
+                    <label htmlFor="message" className="block text-sm font-semibold text-gray-200 mb-2">
+                      Mensagem *
+                    </label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      rows="4"
+                      placeholder="Como podemos ajudar sua empresa?"
+                      value={form.message}
+                      onChange={handleChange}
+                      className={`w-full p-3 bg-white/10 backdrop-blur-sm border rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition-all resize-none text-sm text-white placeholder:text-gray-400 ${errors.message ? 'border-red-500' : 'border-white/20'}`}
+                    />
+                    {errors.message && <p className="text-red-400 text-xs mt-1">{errors.message}</p>}
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-semibold py-3 rounded-xl transition-all duration-500 shadow-lg shadow-cyan-500/30 hover:shadow-xl hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:transform-none flex items-center justify-center gap-2 group text-base"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Enviando...
+                      </>
+                    ) : (
+                      <>
+                        Enviar mensagem
+                        <FaArrowRight className="group-hover:translate-x-1 transition-transform text-sm" />
+                      </>
+                    )}
+                  </button>
+
+                  <AnimatePresence mode="wait">
+                    {submitted && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        className="bg-gradient-to-r from-cyan-500/20 to-blue-600/20 border border-cyan-400/30 text-cyan-300 rounded-xl p-3 text-center text-sm backdrop-blur-sm"
+                      >
+                        ✓ Mensagem enviada com sucesso! Entraremos em contato em breve.
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </form>
+
+                <div className="mt-6 pt-4 border-t border-white/10 text-center">
+                  <p className="text-xs text-gray-400">
+                    Ou se preferir, clique ao lado para enviar diretamente pelo Email
+                  </p>
+                </div>
               </div>
+            </motion.div>
 
-              <form onSubmit={handleSubmit} className="space-y-5">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-semibold text-gray-200 mb-2">
-                    Nome completo *
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    placeholder="Seu nome completo"
-                    value={form.name}
-                    onChange={handleChange}
-                    className={`w-full p-3 bg-white/10 backdrop-blur-sm border rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition-all text-sm text-white placeholder:text-gray-400 ${errors.name ? 'border-red-500' : 'border-white/20'}`}
-                  />
-                  {errors.name && <p className="text-red-400 text-xs mt-1">{errors.name}</p>}
-                </div>
-
-                <div>
-                  <label htmlFor="email" className="block text-sm font-semibold text-gray-200 mb-2">
-                    E-mail *
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder="seu@email.com"
-                    value={form.email}
-                    onChange={handleChange}
-                    className={`w-full p-3 bg-white/10 backdrop-blur-sm border rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition-all text-sm text-white placeholder:text-gray-400 ${errors.email ? 'border-red-500' : 'border-white/20'}`}
-                  />
-                  {errors.email && <p className="text-red-400 text-xs mt-1">{errors.email}</p>}
-                </div>
-
-                <div>
-                  <label htmlFor="message" className="block text-sm font-semibold text-gray-200 mb-2">
-                    Mensagem *
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    rows="4"
-                    placeholder="Como podemos ajudar sua empresa?"
-                    value={form.message}
-                    onChange={handleChange}
-                    className={`w-full p-3 bg-white/10 backdrop-blur-sm border rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition-all resize-none text-sm text-white placeholder:text-gray-400 ${errors.message ? 'border-red-500' : 'border-white/20'}`}
-                  />
-                  {errors.message && <p className="text-red-400 text-xs mt-1">{errors.message}</p>}
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-semibold py-3 rounded-xl transition-all duration-500 shadow-lg shadow-cyan-500/30 hover:shadow-xl hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:transform-none flex items-center justify-center gap-2 group text-base"
-                >
-                  {isSubmitting ? (
-                    <>
-                      <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            {/* MAPA - AGORA SEM SOBRA, TOTALMENTE ALINHADO COM OS CARDS */}
+            <motion.div
+              variants={scaleIn}
+              initial="hidden"
+              animate="show"
+              transition={{ delay: 0.4 }}
+              className="bg-white/5 backdrop-blur-md rounded-2xl overflow-hidden hover:shadow-2xl hover:shadow-cyan-500/20 transition-all duration-500 border border-white/10 hover:border-cyan-400/50 flex-shrink-0"
+            >
+              <div className="relative">
+                {!mapLoaded && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-[#001C30] z-10">
+                    <div className="text-center">
+                      <svg className="animate-spin h-8 w-8 text-cyan-500 mx-auto mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                       </svg>
-                      Enviando...
-                    </>
-                  ) : (
-                    <>
-                      Enviar mensagem
-                      <FaArrowRight className="group-hover:translate-x-1 transition-transform text-sm" />
-                    </>
-                  )}
-                </button>
-
-                <AnimatePresence mode="wait">
-                  {submitted && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      className="bg-gradient-to-r from-cyan-500/20 to-blue-600/20 border border-cyan-400/30 text-cyan-300 rounded-xl p-3 text-center text-sm backdrop-blur-sm"
-                    >
-                      ✓ Mensagem enviada com sucesso! Entraremos em contato em breve.
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </form>
-
-              <div className="mt-6 pt-4 border-t border-white/10 text-center">
-                <p className="text-xs text-gray-400">
-                  Ou se preferir, clique ao lado para enviar diretamente pelo Email
-                </p>
-              </div>
-            </div>
-
-            {/* Mapa */}
-            <div className="relative">
-              {!mapLoaded && (
-                <div className="absolute inset-0 flex items-center justify-center bg-[#001C30] z-10">
-                  <div className="text-center">
-                    <svg className="animate-spin h-8 w-8 text-cyan-500 mx-auto mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    <p className="text-gray-400 text-sm">Carregando mapa...</p>
+                      <p className="text-gray-400 text-sm">Carregando mapa...</p>
+                    </div>
                   </div>
+                )}
+                
+                <iframe
+                  title="Localização da H2B Plásticos"
+                  src={MAP_EMBED_URL}
+                  width="100%"
+                  height="320"
+                  style={{ border: 0, display: 'block' }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  onLoad={() => setMapLoaded(true)}
+                  className="transition-opacity duration-300"
+                />
+                
+                <div className="absolute bottom-3 right-3 z-20">
+                  <a
+                    href={MAPS_DIRECT_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-black/50 hover:bg-black/70 text-white hover:text-cyan-400 backdrop-blur-sm px-3 py-2 rounded-lg shadow-md text-xs font-medium flex items-center gap-1.5 transition-all duration-300 hover:shadow-lg border border-white/20"
+                  >
+                    <FaExternalLinkAlt size={10} />
+                    Abrir no Google Maps
+                  </a>
                 </div>
-              )}
-              
-              <iframe
-                title="Localização da H2B Plásticos"
-                src={MAP_EMBED_URL}
-                width="100%"
-                height="280"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                onLoad={() => setMapLoaded(true)}
-                className="transition-opacity duration-300"
-              />
-              
-              <div className="absolute bottom-3 right-3 z-20">
-                <a
-                  href={MAPS_DIRECT_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-black/50 hover:bg-black/70 text-white hover:text-cyan-400 backdrop-blur-sm px-3 py-2 rounded-lg shadow-md text-xs font-medium flex items-center gap-1.5 transition-all duration-300 hover:shadow-lg border border-white/20"
-                >
-                  <FaExternalLinkAlt size={10} />
-                  Abrir no Google Maps
-                </a>
               </div>
-            </div>
-            
-            <div className="p-4 bg-white/5 backdrop-blur-sm border-t border-white/10">
-              <div className="flex items-center justify-between text-xs">
-                <div className="flex items-center gap-2 text-gray-300">
-                  <FaMapMarkerAlt className="text-cyan-400 text-sm" />
-                  <span className="truncate max-w-[200px] md:max-w-none text-xs">
-                    {COMPANY_LOCATION.address}
-                  </span>
+              
+              <div className="p-4 bg-white/5 backdrop-blur-sm border-t border-white/10">
+                <div className="flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-2 text-gray-300">
+                    <FaMapMarkerAlt className="text-cyan-400 text-sm" />
+                    <span className="truncate max-w-[200px] md:max-w-none text-xs">
+                      {COMPANY_LOCATION.address}
+                    </span>
+                  </div>
+                  <button
+                    onClick={() => {
+                      if (navigator.share) {
+                        navigator.share({
+                          title: 'H2B Plásticos',
+                          text: 'Localização da H2B Plásticos',
+                          url: MAPS_DIRECT_URL,
+                        })
+                      } else {
+                        window.open(MAPS_DIRECT_URL, '_blank')
+                      }
+                    }}
+                    className="text-cyan-400 hover:text-cyan-300 text-xs font-medium flex items-center gap-1 transition-colors"
+                  >
+                    <FaExternalLinkAlt size={9} />
+                    Compartilhar
+                  </button>
                 </div>
-                <button
-                  onClick={() => {
-                    if (navigator.share) {
-                      navigator.share({
-                        title: 'H2B Plásticos',
-                        text: 'Localização da H2B Plásticos',
-                        url: MAPS_DIRECT_URL,
-                      })
-                    } else {
-                      window.open(MAPS_DIRECT_URL, '_blank')
-                    }
-                  }}
-                  className="text-cyan-400 hover:text-cyan-300 text-xs font-medium flex items-center gap-1 transition-colors"
-                >
-                  <FaExternalLinkAlt size={9} />
-                  Compartilhar
-                </button>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         </div>
       </div>
     </section>

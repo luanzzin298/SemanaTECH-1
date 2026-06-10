@@ -267,7 +267,7 @@ const Hero = () => {
                 className="border-2 border-cyan-300 hover:bg-cyan-300/20 text-white px-8 py-3 rounded-full flex items-center gap-2 transition-all duration-300"
               >
                 Catálogo de Produtos
-                <FaPlay className="text-sm" />
+           
               </Link>
             </motion.div>
 

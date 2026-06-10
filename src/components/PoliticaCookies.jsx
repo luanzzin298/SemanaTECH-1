@@ -17,11 +17,36 @@ import {
   FaCheckCircle,
   FaInfoCircle
 } from 'react-icons/fa'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 
 const PoliticaCookies = () => {
   const [activeSection, setActiveSection] = useState('o-que-sao')
+  const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 })
   const { scrollYProgress } = useScroll()
+  const sectionRef = useRef(null)
+
+  // Efeito de mouse para gradiente dinâmico
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      const x = (e.clientX / window.innerWidth) * 100
+      const y = (e.clientY / window.innerHeight) * 100
+      setMousePosition({ x, y })
+    }
+    window.addEventListener('mousemove', handleMouseMove)
+    return () => window.removeEventListener('mousemove', handleMouseMove)
+  }, [])
+
+  // Scroll para o topo
+  useEffect(() => {
+    setTimeout(() => {
+      if (sectionRef.current) {
+        const offset = 70
+        const elementPosition = sectionRef.current.getBoundingClientRect().top
+        const offsetPosition = elementPosition + window.pageYOffset - offset
+        window.scrollTo({ top: offsetPosition, behavior: 'smooth' })
+      }
+    }, 100)
+  }, [])
 
   // Smooth scroll para seções
   const scrollToSection = (sectionId) => {
@@ -73,32 +98,24 @@ const PoliticaCookies = () => {
       icon: FaDatabase,
       title: 'Cookies Essenciais',
       description: 'Necessários para o funcionamento básico do site',
-      color: 'from-red-500 to-red-600',
-      bgColor: 'bg-red-50',
       example: 'Autenticação, segurança, carrinho de compras'
     },
     {
       icon: FaChartLine,
       title: 'Cookies de Desempenho',
       description: 'Nos ajudam a entender como os visitantes interagem com o site',
-      color: 'from-blue-500 to-blue-600',
-      bgColor: 'bg-blue-50',
       example: 'Páginas mais visitadas, tempo de navegação'
     },
     {
       icon: FaUserCheck,
       title: 'Cookies Funcionais',
       description: 'Lembram suas preferências para melhorar sua experiência',
-      color: 'from-green-500 to-green-600',
-      bgColor: 'bg-green-50',
       example: 'Idioma, tema, preferências de exibição'
     },
     {
       icon: FaAd,
       title: 'Cookies de Publicidade',
       description: 'Usados para entregar anúncios relevantes',
-      color: 'from-purple-500 to-purple-600',
-      bgColor: 'bg-purple-50',
       example: 'Anúncios personalizados, campanhas'
     }
   ]
@@ -107,26 +124,22 @@ const PoliticaCookies = () => {
     {
       icon: FaChrome,
       name: 'Google Chrome',
-      path: 'Configurações → Privacidade e segurança → Cookies',
-      color: 'from-blue-500 to-blue-600'
+      path: 'Configurações → Privacidade e segurança → Cookies'
     },
     {
       icon: FaFirefox,
       name: 'Mozilla Firefox',
-      path: 'Opções → Privacidade e segurança → Cookies',
-      color: 'from-orange-500 to-orange-600'
+      path: 'Opções → Privacidade e segurança → Cookies'
     },
     {
       icon: FaSafari,
       name: 'Safari',
-      path: 'Preferências → Privacidade → Cookies',
-      color: 'from-blue-400 to-blue-500'
+      path: 'Preferências → Privacidade → Cookies'
     },
     {
       icon: FaEdge,
       name: 'Microsoft Edge',
-      path: 'Configurações → Privacidade → Cookies',
-      color: 'from-green-500 to-green-600'
+      path: 'Configurações → Privacidade → Cookies'
     }
   ]
 
@@ -154,14 +167,34 @@ const PoliticaCookies = () => {
   ]
 
   return (
-    <section className="pt-20 pb-20 bg-gradient-to-b from-gray-50 to-white min-h-screen">
+    <section
+      ref={sectionRef}
+      className="pt-24 pb-20 overflow-hidden relative min-h-screen bg-gradient-to-br from-[#001C30] via-[#001C30] to-[#0A4A6E]"
+    >
+      {/* Fundo com gradiente dinâmico seguindo o mouse */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div 
+          className="absolute inset-0 opacity-30"
+          style={{
+            background: `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(6, 182, 212, 0.15) 0%, rgba(6, 182, 212, 0) 60%)`
+          }}
+        />
+      </div>
+
+      {/* Padrão industrial de fundo */}
+      <div className="absolute inset-0 opacity-5 pointer-events-none">
+        <div className="absolute top-0 left-0 w-96 h-96 bg-cyan-400 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-600 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-500 rounded-full blur-3xl" />
+      </div>
+
       {/* Barra de progresso de scroll */}
       <motion.div 
-        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-400 to-cyan-600 z-50"
+        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-400 to-blue-600 z-50"
         style={{ scaleX: scrollYProgress, transformOrigin: '0%' }}
       />
 
-      <div className="container mx-auto px-4 md:px-6">
+      <div className="container mx-auto px-4 md:px-6 relative z-10">
         <motion.div
           initial="hidden"
           animate="visible"
@@ -171,16 +204,16 @@ const PoliticaCookies = () => {
           {/* Header */}
           <div className="relative mb-12">
             {/* Badge de última atualização */}
-            <div className="absolute top-0 right-0 bg-cyan-100 text-cyan-700 text-xs font-semibold px-3 py-1 rounded-full">
+            <div className="absolute top-0 right-0 bg-cyan-500/20 backdrop-blur-sm text-cyan-300 text-xs font-semibold px-3 py-1 rounded-full border border-cyan-400/30">
               📅 Atualizado: {new Date().toLocaleDateString('pt-BR')}
             </div>
 
             {/* Botão voltar */}
             <Link
               to="/"
-              className="inline-flex items-center gap-2 text-cyan-600 hover:text-cyan-700 mb-8 transition-all duration-300 group"
+              className="inline-flex items-center gap-2 text-cyan-400 hover:text-cyan-300 mb-8 transition-all duration-300 group"
             >
-              <div className="bg-cyan-100 p-2 rounded-full group-hover:bg-cyan-200 transition-colors">
+              <div className="bg-cyan-500/20 backdrop-blur-sm p-2 rounded-full group-hover:bg-cyan-500/30 transition-colors border border-cyan-400/30">
                 <FaArrowLeft className="text-sm" />
               </div>
               <span className="font-medium">Voltar para o início</span>
@@ -195,27 +228,32 @@ const PoliticaCookies = () => {
                 className="inline-block mb-6"
               >
                 <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-cyan-600 rounded-full blur-xl opacity-50"></div>
-                  <div className="relative bg-gradient-to-r from-cyan-500 to-cyan-600 p-5 rounded-full shadow-lg">
+                  <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-blue-600 rounded-full blur-xl opacity-50"></div>
+                  <div className="relative bg-gradient-to-r from-cyan-500 to-blue-600 p-5 rounded-full shadow-lg">
                     <FaCookie className="text-4xl text-white" />
                   </div>
                 </div>
               </motion.div>
 
               <motion.h1 
-                className="text-5xl md:text-6xl lg:text-7xl font-bold mb-4 bg-gradient-to-r from-[#001C30] to-cyan-600 bg-clip-text text-transparent"
+                className="text-5xl md:text-6xl lg:text-7xl font-bold mb-4"
                 variants={fadeUp}
               >
-                Política de Cookies
+                <span className="bg-gradient-to-r from-white to-cyan-300 bg-clip-text text-transparent">
+                  Política de
+                </span>{' '}
+                <span className="bg-gradient-to-r from-cyan-400 via-cyan-300 to-blue-400 bg-clip-text text-transparent">
+                  Cookies
+                </span>
               </motion.h1>
               
               <motion.div 
-                className="w-24 h-1 bg-gradient-to-r from-cyan-400 to-cyan-600 mx-auto mb-6 rounded-full"
+                className="w-24 h-1 bg-gradient-to-r from-cyan-400 to-blue-600 mx-auto mb-6 rounded-full"
                 variants={fadeUp}
               />
               
               <motion.p 
-                className="text-gray-600 text-lg max-w-2xl mx-auto"
+                className="text-gray-300 text-lg max-w-2xl mx-auto"
                 variants={fadeUp}
               >
                 Entenda como utilizamos cookies para melhorar sua experiência em nosso site
@@ -223,22 +261,22 @@ const PoliticaCookies = () => {
             </div>
 
             {/* Menu de navegação rápida */}
-            <div className="sticky top-20 z-40 bg-white/80 backdrop-blur-md rounded-2xl shadow-sm border border-gray-100 p-2 mb-12">
+            <div className="sticky top-20 z-40 bg-white/5 backdrop-blur-md rounded-2xl shadow-sm border border-white/10 p-2 mb-12">
               <div className="flex flex-wrap justify-center gap-2">
                 {[
-                  { id: 'o-que-sao', label: '🍪 O que são?' },
-                  { id: 'como-usamos', label: '📊 Como usamos' },
-                  { id: 'tipos', label: '🔢 Tipos' },
-                  { id: 'gerenciamento', label: '⚙️ Gerenciamento' },
-                  { id: 'configuracoes', label: '🌐 Configurações' }
+                  { id: 'o-que-sao', label: 'O que são?' },
+                  { id: 'como-usamos', label: 'Como usamos' },
+                  { id: 'tipos', label: 'Tipos' },
+                  { id: 'gerenciamento', label: 'Gerenciamento' },
+                  { id: 'configuracoes', label: 'Configurações' }
                 ].map((item) => (
                   <button
                     key={item.id}
                     onClick={() => scrollToSection(item.id)}
                     className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300
                       ${activeSection === item.id 
-                        ? 'bg-gradient-to-r from-cyan-500 to-cyan-600 text-white shadow-md' 
-                        : 'text-gray-600 hover:bg-gray-100'
+                        ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md' 
+                        : 'text-gray-300 hover:bg-white/10'
                       }`}
                   >
                     {item.label}
@@ -260,14 +298,14 @@ const PoliticaCookies = () => {
               <motion.div
                 key={idx}
                 variants={fadeUp}
-                whileHover={{ y: -5, scale: 1.02 }}
-                className="bg-white rounded-2xl p-6 shadow-md border border-gray-100 hover:shadow-xl transition-all duration-300"
+                whileHover={{ y: -5 }}
+                className="bg-white/5 backdrop-blur-md rounded-2xl p-6 shadow-md border border-white/10 hover:border-cyan-400/50 hover:shadow-cyan-500/20 transition-all duration-300 group"
               >
-                <div className="bg-gradient-to-r from-cyan-100 to-cyan-50 w-12 h-12 rounded-xl flex items-center justify-center mb-4">
-                  <beneficio.icon className="text-cyan-600 text-xl" />
+                <div className="bg-gradient-to-br from-cyan-400/20 to-blue-600/20 w-12 h-12 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <beneficio.icon className="text-cyan-400 text-xl" />
                 </div>
-                <h3 className="font-bold text-gray-800 mb-2">{beneficio.title}</h3>
-                <p className="text-gray-500 text-xs">{beneficio.description}</p>
+                <h3 className="font-bold text-white mb-2">{beneficio.title}</h3>
+                <p className="text-gray-300 text-xs">{beneficio.description}</p>
               </motion.div>
             ))}
           </motion.div>
@@ -281,23 +319,23 @@ const PoliticaCookies = () => {
             variants={fadeUp}
             className="scroll-mt-24 mb-8"
           >
-            <div className="bg-white rounded-2xl p-8 shadow-md border border-gray-100 hover:shadow-lg transition-shadow duration-300">
+            <div className="bg-white/5 backdrop-blur-md rounded-2xl p-8 shadow-md border border-white/10 hover:border-cyan-400/50 hover:shadow-cyan-500/20 transition-all duration-300">
               <div className="flex items-start gap-4">
-                <div className="bg-gradient-to-r from-cyan-500 to-cyan-600 w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
-                  <FaCookieBite className="text-white text-xl" />
+                <div className="bg-gradient-to-br from-cyan-400/20 to-blue-600/20 w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
+                  <FaCookieBite className="text-cyan-400 text-xl" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold text-[#001C30] mb-4">
+                  <h2 className="text-2xl font-bold text-white mb-4">
                     O que são Cookies?
                   </h2>
-                  <p className="text-gray-700 leading-relaxed">
+                  <p className="text-gray-300 leading-relaxed">
                     Cookies são pequenos arquivos de texto que os sites que você visita colocam no seu computador. 
                     Eles são amplamente utilizados para fazer os sites funcionarem ou funcionarem de forma mais eficiente, 
                     bem como para fornecer informações aos proprietários do site.
                   </p>
-                  <div className="mt-4 p-3 bg-gray-50 rounded-lg">
-                    <p className="text-sm text-gray-600">
-                      💡 <strong>Importante:</strong> Os cookies não contêm vírus e não podem acessar seus arquivos pessoais.
+                  <div className="mt-4 p-3 bg-white/5 rounded-lg border border-white/10">
+                    <p className="text-sm text-gray-300">
+                      💡 <strong className="text-cyan-400">Importante:</strong> Os cookies não contêm vírus e não podem acessar seus arquivos pessoais.
                     </p>
                   </div>
                 </div>
@@ -314,12 +352,12 @@ const PoliticaCookies = () => {
             variants={fadeUp}
             className="scroll-mt-24 mb-8"
           >
-            <div className="bg-white rounded-2xl p-8 shadow-md border border-gray-100 hover:shadow-lg transition-shadow duration-300">
-              <h2 className="text-2xl font-bold text-[#001C30] mb-4 flex items-center gap-2">
-                <FaChartLine className="text-cyan-500" />
+            <div className="bg-white/5 backdrop-blur-md rounded-2xl p-8 shadow-md border border-white/10 hover:border-cyan-400/50 hover:shadow-cyan-500/20 transition-all duration-300">
+              <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
+                <FaChartLine className="text-cyan-400" />
                 Como Utilizamos Cookies
               </h2>
-              <p className="text-gray-700 leading-relaxed mb-4">
+              <p className="text-gray-300 leading-relaxed mb-4">
                 Utilizamos cookies de diferentes tipos para melhorar sua experiência, personalizar conteúdo e anúncios, 
                 fornecer recursos de mídia social e analisar nosso tráfego.
               </p>
@@ -335,23 +373,23 @@ const PoliticaCookies = () => {
             variants={fadeUp}
             className="scroll-mt-24 mb-8"
           >
-            <div className="bg-white rounded-2xl p-8 shadow-md border border-gray-100">
-              <h2 className="text-2xl font-bold text-[#001C30] mb-6 text-center">
+            <div className="bg-white/5 backdrop-blur-md rounded-2xl p-8 shadow-md border border-white/10">
+              <h2 className="text-2xl font-bold text-white mb-6 text-center">
                 Tipos de Cookies que Utilizamos
               </h2>
               <div className="grid md:grid-cols-2 gap-6">
                 {tiposCookies.map((tipo, idx) => (
                   <motion.div
                     key={idx}
-                    whileHover={{ scale: 1.02 }}
-                    className={`${tipo.bgColor} rounded-xl p-5 transition-all duration-300`}
+                    whileHover={{ y: -5 }}
+                    className="bg-white/5 rounded-xl p-5 transition-all duration-300 hover:border-cyan-400/50 border border-transparent"
                   >
-                    <div className={`bg-gradient-to-r ${tipo.color} w-10 h-10 rounded-lg flex items-center justify-center mb-3`}>
-                      <tipo.icon className="text-white text-lg" />
+                    <div className="bg-gradient-to-br from-cyan-400/20 to-blue-600/20 w-10 h-10 rounded-lg flex items-center justify-center mb-3">
+                      <tipo.icon className="text-cyan-400 text-lg" />
                     </div>
-                    <h3 className="font-bold text-gray-800 mb-2">{tipo.title}</h3>
-                    <p className="text-gray-600 text-sm mb-2">{tipo.description}</p>
-                    <p className="text-xs text-gray-500">Exemplo: {tipo.example}</p>
+                    <h3 className="font-bold text-white mb-2">{tipo.title}</h3>
+                    <p className="text-gray-300 text-sm mb-2">{tipo.description}</p>
+                    <p className="text-xs text-gray-400">Exemplo: {tipo.example}</p>
                   </motion.div>
                 ))}
               </div>
@@ -367,8 +405,8 @@ const PoliticaCookies = () => {
             variants={fadeUp}
             className="scroll-mt-24 mb-8"
           >
-            <div className="bg-gradient-to-br from-gray-900 to-[#001C30] rounded-2xl p-8 shadow-2xl text-white">
-              <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
+            <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-md rounded-2xl p-8 shadow-2xl border border-white/20">
+              <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
                 <FaShieldAlt className="text-cyan-400" />
                 Gerenciamento de Cookies
               </h2>
@@ -401,8 +439,8 @@ const PoliticaCookies = () => {
             variants={fadeUp}
             className="scroll-mt-24 mb-8"
           >
-            <div className="bg-white rounded-2xl p-8 shadow-md border border-gray-100">
-              <h2 className="text-2xl font-bold text-[#001C30] mb-6 text-center">
+            <div className="bg-white/5 backdrop-blur-md rounded-2xl p-8 shadow-md border border-white/10">
+              <h2 className="text-2xl font-bold text-white mb-6 text-center">
                 Configurações por Navegador
               </h2>
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -410,13 +448,13 @@ const PoliticaCookies = () => {
                   <motion.div
                     key={idx}
                     whileHover={{ y: -3 }}
-                    className="bg-gray-50 rounded-xl p-4 text-center hover:shadow-md transition-all duration-300"
+                    className="bg-white/5 rounded-xl p-4 text-center hover:shadow-md transition-all duration-300 hover:border-cyan-400/50 border border-transparent"
                   >
-                    <div className={`bg-gradient-to-r ${nav.color} w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3`}>
-                      <nav.icon className="text-white text-xl" />
+                    <div className="bg-gradient-to-br from-cyan-400/20 to-blue-600/20 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <nav.icon className="text-cyan-400 text-xl" />
                     </div>
-                    <h3 className="font-semibold text-gray-800 text-sm mb-2">{nav.name}</h3>
-                    <p className="text-gray-500 text-xs">{nav.path}</p>
+                    <h3 className="font-semibold text-white text-sm mb-2">{nav.name}</h3>
+                    <p className="text-gray-400 text-xs">{nav.path}</p>
                   </motion.div>
                 ))}
               </div>
@@ -429,39 +467,39 @@ const PoliticaCookies = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
-            className="mt-8 bg-gradient-to-r from-cyan-50 to-blue-50 rounded-2xl p-6 border border-cyan-100"
+            className="mt-8 bg-gradient-to-r from-cyan-500/10 to-blue-600/10 backdrop-blur-md rounded-2xl p-6 border border-cyan-400/30"
           >
             <div className="flex items-start gap-4">
-              <div className="bg-cyan-500 p-3 rounded-xl">
+              <div className="bg-gradient-to-r from-cyan-500 to-blue-600 p-3 rounded-xl">
                 <FaInfoCircle className="text-white text-xl" />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-cyan-800 mb-2">
+                <h3 className="text-lg font-bold text-cyan-300 mb-2">
                   Precisa de ajuda sobre Cookies?
                 </h3>
-                <p className="text-cyan-700 text-sm">
+                <p className="text-gray-300 text-sm">
                   Se tiver dúvidas sobre nossa Política de Cookies, entre em contato conosco pelo e-mail:{' '}
-                  <strong className="text-cyan-900">cookies@h2bplasticos.com.br</strong>
+                  <strong className="text-cyan-300">contato@h2bplasticos.com.br</strong>
                 </p>
               </div>
             </div>
           </motion.div>
 
           {/* Footer da página */}
-          <div className="text-center pt-8 mt-8 border-t border-gray-200">
-            <p className="text-gray-500 text-sm">
+          <div className="text-center pt-8 mt-8 border-t border-white/10">
+            <p className="text-gray-400 text-sm">
               © {new Date().getFullYear()} H2B Plásticos - Todos os direitos reservados
             </p>
             <div className="flex justify-center gap-4 mt-4">
-              <Link to="/politica-privacidade" className="text-xs text-gray-400 hover:text-cyan-600 transition-colors">
+              <Link to="/politica-privacidade" className="text-xs text-gray-400 hover:text-cyan-400 transition-colors">
                 Política de Privacidade
               </Link>
-              <span className="text-gray-300">|</span>
-              <Link to="/termos-uso" className="text-xs text-gray-400 hover:text-cyan-600 transition-colors">
+              <span className="text-gray-500">|</span>
+              <Link to="/termos-uso" className="text-xs text-gray-400 hover:text-cyan-400 transition-colors">
                 Termos de Uso
               </Link>
-              <span className="text-gray-300">|</span>
-              <Link to="/codigo-etica" className="text-xs text-gray-400 hover:text-cyan-600 transition-colors">
+              <span className="text-gray-500">|</span>
+              <Link to="/codigo-etica" className="text-xs text-gray-400 hover:text-cyan-400 transition-colors">
                 Código de Ética
               </Link>
             </div>
