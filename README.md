@@ -23,7 +23,6 @@ A plataforma foi projetada para oferecer uma navegação moderna, intuitiva e re
 ## Funcionalidades
 
 * Apresentação institucional da empresa
-* Catálogo de produtos
 * Seção de serviços especializados
 * Diferenciais competitivos
 * Sustentabilidade e responsabilidade ambiental
