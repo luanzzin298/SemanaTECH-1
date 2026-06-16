@@ -67,20 +67,6 @@ Experiência visual enriquecida utilizando Framer Motion.
 
 Informações organizadas para facilitar a experiência do usuário.
 
----
-
-## 🛠️ Tecnologias Utilizadas
-
-| Tecnologia    | Função      |
-| ------------- | ----------- |
-| React         | Interface   |
-| Vite          | Build Tool  |
-| Tailwind CSS  | Estilização |
-| Framer Motion | Animações   |
-| React Router  | Navegação   |
-| React Icons   | Iconografia |
-
----
 
 ## 📂 Estrutura do Projeto
 
