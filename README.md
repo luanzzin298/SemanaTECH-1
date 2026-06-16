@@ -1,18 +1,153 @@
-# React + Vite
+# 🌊 H2B Plásticos — Website Institucional
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### Plataforma institucional desenvolvida para a H2B Plásticos
 
-Currently, two official plugins are available:
+Soluções em plásticos com foco em **inovação**, **qualidade**, **sustentabilidade** e **experiência digital moderna**.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## 📖 Sobre o Projeto
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+Este projeto foi desenvolvido para a **Semana Tech**, consistindo na reformulação completa da presença digital da **H2B Plásticos**.
 
-Note: This will impact Vite dev & build performances.
+A proposta foi criar uma plataforma moderna, responsiva e intuitiva, capaz de apresentar a empresa, seus produtos, serviços e diferenciais de forma profissional e acessível.
 
-## Expanding the ESLint configuration
+O site apresenta:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+* História e apresentação da empresa
+* Catálogo de produtos
+* Serviços especializados
+* Diferenciais competitivos
+* Sustentabilidade
+* Área "Trabalhe Conosco"
+* Contato rápido via WhatsApp
+
+---
+
+## 🗺️ Estrutura do Site
+
+```text
+Início
+│
+├── Sobre
+├── Produtos
+├── Serviços
+├── Diferenciais
+├── Sustentabilidade
+├── Trabalhe Conosco
+└── Contato
+```
+
+---
+
+## ✨ Principais Recursos
+
+### Design Premium
+
+Interface moderna inspirada em grandes indústrias e empresas de tecnologia.
+
+### Responsividade Completa
+
+Experiência otimizada para:
+
+* Desktop
+* Notebook
+* Tablet
+* Smartphone
+
+### Alta Performance
+
+Construído utilizando tecnologias modernas para carregamento rápido.
+
+### Animações Modernas
+
+Experiência visual enriquecida utilizando Framer Motion.
+
+### Navegação Intuitiva
+
+Informações organizadas para facilitar a experiência do usuário.
+
+---
+
+## 🛠️ Tecnologias Utilizadas
+
+| Tecnologia    | Função      |
+| ------------- | ----------- |
+| React         | Interface   |
+| Vite          | Build Tool  |
+| Tailwind CSS  | Estilização |
+| Framer Motion | Animações   |
+| React Router  | Navegação   |
+| React Icons   | Iconografia |
+
+---
+
+## 📂 Estrutura do Projeto
+
+```bash
+src/
+│
+├── components/
+├── pages/
+├── data/
+├── assets/
+├── hooks/
+├── styles/
+│
+├── App.jsx
+└── main.jsx
+```
+
+---
+
+## 🚀 Instalação
+
+Clone o projeto:
+
+```bash
+git clone https://github.com/seu-usuario/seu-repositorio.git
+```
+
+Entre na pasta:
+
+```bash
+cd SemanaTECH-1
+```
+
+Instale as dependências:
+
+```bash
+npm install
+```
+
+Execute o projeto:
+
+```bash
+npm run dev
+```
+
+---
+
+## 🎯 Objetivo
+
+Desenvolver uma experiência digital moderna para a H2B Plásticos, demonstrando conceitos de desenvolvimento web, design responsivo, animações avançadas e organização de conteúdo corporativo.
+
+O projeto foi criado como parte da **Semana Tech**, aplicando tecnologias atuais do ecossistema React para a construção de uma plataforma institucional profissional.
+
+---
+
+## 👨‍💻 Desenvolvimento
+
+Desenvolvido por:
+
+### Luan Silva e Kauã Fernandes
+
+Projeto acadêmico desenvolvido para a **Semana Tech**.
+
+---
+
+### H2B Plásticos
+
+**Soluções em Plásticos com Inovação e Sustentabilidade**
+
+Se este projeto foi útil para você, considere deixar uma ⭐ no repositório.
