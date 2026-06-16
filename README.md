@@ -1,30 +1,40 @@
-# 🌊 H2B Plásticos — Website Institucional
+# H2B Plásticos — Website Institucional
 
-### Plataforma institucional desenvolvida para a H2B Plásticos
+<div align="center">
 
-Soluções em plásticos com foco em **inovação**, **qualidade**, **sustentabilidade** e **experiência digital moderna**.
+### Plataforma Institucional Desenvolvida para a Semana Tech
+
+Sistema web moderno desenvolvido para apresentar a H2B Plásticos de forma profissional, destacando sua história, produtos, serviços, diferenciais competitivos e compromisso com a sustentabilidade.
+
+**React • Vite • Tailwind CSS • Framer Motion**
+
+</div>
 
 ---
 
-## 📖 Sobre o Projeto
+## Sobre o Projeto
 
-Este projeto foi desenvolvido para a **Semana Tech**, consistindo na reformulação completa da presença digital da **H2B Plásticos**.
+Este projeto foi desenvolvido para a **Semana Tech** com o objetivo de criar uma nova experiência digital para a **H2B Plásticos**.
 
-A proposta foi criar uma plataforma moderna, responsiva e intuitiva, capaz de apresentar a empresa, seus produtos, serviços e diferenciais de forma profissional e acessível.
+A plataforma foi projetada para oferecer uma navegação moderna, intuitiva e responsiva, permitindo que clientes e visitantes conheçam melhor a empresa, seus produtos e suas soluções para o mercado plástico.
 
-O site apresenta:
+---
 
-* História e apresentação da empresa
+## Funcionalidades
+
+* Apresentação institucional da empresa
 * Catálogo de produtos
-* Serviços especializados
+* Seção de serviços especializados
 * Diferenciais competitivos
-* Sustentabilidade
-* Área "Trabalhe Conosco"
-* Contato rápido via WhatsApp
+* Sustentabilidade e responsabilidade ambiental
+* Área de oportunidades profissionais
+* Página de contato integrada ao WhatsApp
+* Interface responsiva para todos os dispositivos
+* Animações e transições modernas
 
 ---
 
-## 🗺️ Estrutura do Site
+## Estrutura do Site
 
 ```text
 Início
@@ -40,44 +50,28 @@ Início
 
 ---
 
-## ✨ Principais Recursos
+## Tecnologias Utilizadas
 
-### Design Premium
+| Tecnologia    | Descrição                   |
+| ------------- | --------------------------- |
+| React         | Construção da interface     |
+| Vite          | Ambiente de desenvolvimento |
+| Tailwind CSS  | Estilização moderna         |
+| Framer Motion | Animações e transições      |
+| React Router  | Navegação entre páginas     |
+| React Icons   | Biblioteca de ícones        |
 
-Interface moderna inspirada em grandes indústrias e empresas de tecnologia.
+---
 
-### Responsividade Completa
-
-Experiência otimizada para:
-
-* Desktop
-* Notebook
-* Tablet
-* Smartphone
-
-### Alta Performance
-
-Construído utilizando tecnologias modernas para carregamento rápido.
-
-### Animações Modernas
-
-Experiência visual enriquecida utilizando Framer Motion.
-
-### Navegação Intuitiva
-
-Informações organizadas para facilitar a experiência do usuário.
-
-
-## 📂 Estrutura do Projeto
+## Estrutura do Projeto
 
 ```bash
 src/
 │
-├── components/
-├── pages/
-├── data/
 ├── assets/
-├── hooks/
+├── components/
+├── data/
+├── pages/
 ├── styles/
 │
 ├── App.jsx
@@ -86,15 +80,15 @@ src/
 
 ---
 
-## 🚀 Instalação
+## Instalação
 
-Clone o projeto:
+Clone o repositório:
 
 ```bash
-git clone https://github.com/seu-usuario/seu-repositorio.git
+git clone https://github.com/kz09kaua/SemanaTECH-1.git
 ```
 
-Entre dentro da pasta:
+Acesse a pasta do projeto:
 
 ```bash
 cd SemanaTECH-1
@@ -106,7 +100,7 @@ Instale as dependências:
 npm install
 ```
 
-Execute o projeto:
+Execute o ambiente de desenvolvimento:
 
 ```bash
 npm run dev
@@ -114,26 +108,26 @@ npm run dev
 
 ---
 
-## 🎯 Objetivo
+## Objetivo do Projeto
 
-Desenvolver uma experiência digital moderna para a H2B Plásticos, demonstrando conceitos de desenvolvimento web, design responsivo, animações avançadas e organização de conteúdo corporativo.
+Desenvolver uma plataforma institucional moderna para a H2B Plásticos, aplicando conceitos de desenvolvimento front-end, experiência do usuário, design responsivo e animações avançadas.
 
-O projeto foi criado como parte da **Semana Tech**, aplicando tecnologias atuais do ecossistema React para a construção de uma plataforma institucional profissional.
+O projeto foi apresentado durante a **Semana Tech**, demonstrando a utilização de tecnologias atuais do ecossistema React para a criação de soluções web profissionais.
+
+---
+
+## Desenvolvedor
+
+**Luan Silva e Kauã Fernandes**
+
+Projeto acadêmico desenvolvido para a Semana Tech.
 
 ---
 
-## 👨‍💻 Desenvolvimento
-
-Desenvolvido por:
-
-### Luan Silva e Kauã Fernandes
-
-Projeto acadêmico desenvolvido para a **Semana Tech**.
-
----
+<div align="center">
 
 ### H2B Plásticos
 
-**Soluções em Plásticos com Inovação e Sustentabilidade**
+Soluções em Plásticos com Inovação e Sustentabilidade
 
-Se este projeto foi útil para você, considere deixar uma ⭐ no repositório.
+</div>
