@@ -94,7 +94,7 @@ Clone o projeto:
 git clone https://github.com/seu-usuario/seu-repositorio.git
 ```
 
-Entre na pasta:
+Entre dentro da pasta:
 
 ```bash
 cd SemanaTECH-1
