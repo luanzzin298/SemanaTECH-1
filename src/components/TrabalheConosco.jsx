@@ -1,8 +1,8 @@
 import { motion, AnimatePresence } from 'framer-motion'
-import { 
-  FaBriefcase, 
-  FaMapMarkerAlt, 
-  FaClock, 
+import {
+  FaBriefcase,
+  FaMapMarkerAlt,
+  FaClock,
   FaMoneyBillWave,
   FaWhatsapp,
   FaEnvelope,
@@ -372,8 +372,10 @@ const CustomSelect = ({ value, onChange, options, placeholder, error }) => {
 }
 
 // ============================================
-// COMPONENTE DE INPUT COM VALIDAÇÃO
+// COMPONENTES DE INPUT (PADRONIZADOS)
 // ============================================
+
+// 1. Apenas letras, acentos e espaços (Nome, Bairro, Cidade, Naturalidade)
 const InputText = ({ label, value, onChange, placeholder, error, required }) => {
   const handleChange = (e) => {
     let val = e.target.value
@@ -399,6 +401,7 @@ const InputText = ({ label, value, onChange, placeholder, error, required }) => 
   )
 }
 
+// 2. Apenas números (CPF, Celular, CEP, Número da casa)
 const InputNumber = ({ label, value, onChange, placeholder, error, required, maxLength }) => {
   const handleChange = (e) => {
     let val = e.target.value
@@ -425,6 +428,7 @@ const InputNumber = ({ label, value, onChange, placeholder, error, required, max
   )
 }
 
+// 3. E-mail
 const InputEmail = ({ label, value, onChange, placeholder, error, required }) => {
   return (
     <div>
@@ -443,6 +447,7 @@ const InputEmail = ({ label, value, onChange, placeholder, error, required }) =>
   )
 }
 
+// 4. Textarea com limite
 const TextAreaWithLimit = ({ label, value, onChange, placeholder, error, required, maxLength = 2000 }) => {
   return (
     <div>
@@ -460,6 +465,25 @@ const TextAreaWithLimit = ({ label, value, onChange, placeholder, error, require
       <div className="text-right text-xs text-gray-400 mt-1">
         {value.length}/{maxLength} caracteres
       </div>
+      {error && <p className="text-red-400 text-xs mt-1">{error}</p>}
+    </div>
+  )
+}
+
+// 5. Texto livre (qualquer caractere) - para Endereço, Complemento, Disponibilidade
+const InputTextFree = ({ label, value, onChange, placeholder, error, required }) => {
+  return (
+    <div>
+      <label className="block text-gray-300 text-sm mb-2">
+        {label} {required && <span className="text-red-400">*</span>}
+      </label>
+      <input
+        type="text"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className={`w-full p-3 bg-white/10 rounded-xl border ${error ? 'border-red-500' : 'border-white/20'} focus:outline-none focus:border-cyan-400 text-white placeholder:text-gray-400 transition-all duration-300`}
+        placeholder={placeholder}
+      />
       {error && <p className="text-red-400 text-xs mt-1">{error}</p>}
     </div>
   )
@@ -561,6 +585,7 @@ const TrabalheConosco = () => {
     if (!formData.celular.trim()) newErrors.celular = 'Celular é obrigatório'
     else if (formData.celular.length < 10) newErrors.celular = 'Celular deve ter pelo menos 10 dígitos'
     if (!formData.endereco.trim()) newErrors.endereco = 'Endereço é obrigatório'
+    // Número não é obrigatório
     if (!formData.bairro.trim()) newErrors.bairro = 'Bairro é obrigatório'
     if (!formData.cidade.trim()) newErrors.cidade = 'Cidade é obrigatória'
     if (!formData.cep.trim()) newErrors.cep = 'CEP é obrigatório'
@@ -882,7 +907,7 @@ const TrabalheConosco = () => {
                     </h3>
                     <div className="grid md:grid-cols-2 gap-4">
                       <div className="md:col-span-2">
-                        <InputText
+                        <InputTextFree
                           label="Endereço"
                           value={formData.endereco}
                           onChange={(val) => setFormData({ ...formData, endereco: val })}
@@ -891,14 +916,15 @@ const TrabalheConosco = () => {
                           required
                         />
                       </div>
-                      <InputText
+                      <InputNumber
                         label="Número"
                         value={formData.numero}
                         onChange={(val) => setFormData({ ...formData, numero: val })}
                         placeholder="Número"
                         required={false}
+                        maxLength={10}
                       />
-                      <InputText
+                      <InputTextFree
                         label="Complemento"
                         value={formData.complemento}
                         onChange={(val) => setFormData({ ...formData, complemento: val })}
@@ -961,7 +987,7 @@ const TrabalheConosco = () => {
                           className="w-full p-3 bg-cyan-500/20 rounded-xl border border-cyan-400/30 text-cyan-300 font-medium cursor-default"
                         />
                       </div>
-                      <InputText
+                      <InputTextFree
                         label="Disponibilidade para início"
                         value={formData.disponibilidade}
                         onChange={(val) => setFormData({ ...formData, disponibilidade: val })}
@@ -1023,7 +1049,6 @@ const TrabalheConosco = () => {
           </motion.div>
         )}
 
-       
       </div>
     </section>
   )
