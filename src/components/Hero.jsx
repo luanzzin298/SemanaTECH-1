@@ -1,4 +1,4 @@
-import { motion, useSpring, useTransform } from 'framer-motion'
+import { motion, useSpring, useTransform } from "framer-motion";
 import {
   FaArrowRight,
   FaPlay,
@@ -6,96 +6,96 @@ import {
   FaRecycle,
   FaTrophy,
   FaClock,
-} from 'react-icons/fa'
-import { useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
+} from "react-icons/fa";
+import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
-  const [logoMousePosition, setLogoMousePosition] = useState({ x: 0, y: 0 })
-  const containerRef = useRef(null)
-  const sectionRef = useRef(null)
-  const logoContainerRef = useRef(null)
-  const logoRef = useRef(null)
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [logoMousePosition, setLogoMousePosition] = useState({ x: 0, y: 0 });
+  const containerRef = useRef(null);
+  const sectionRef = useRef(null);
+  const logoContainerRef = useRef(null);
+  const logoRef = useRef(null);
 
   // Scroll automático para o topo da seção quando a página carregar
   useEffect(() => {
     setTimeout(() => {
       if (sectionRef.current) {
-        const offset = 80
-        const elementPosition = sectionRef.current.getBoundingClientRect().top
-        const offsetPosition = elementPosition + window.pageYOffset - offset
-        
+        const offset = 80;
+        const elementPosition = sectionRef.current.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - offset;
+
         window.scrollTo({
           top: offsetPosition,
-          behavior: 'smooth'
-        })
+          behavior: "smooth",
+        });
       }
-    }, 100)
-  }, [])
+    }, 100);
+  }, []);
 
   // Configurações das imagens
   const BACKGROUND_IMAGE_URL =
-    'https://static.blocks-cms.com/h2bplasticos/upload/slide/6d7e083fa5224d66bd26394de530be51.png'
+    "https://static.blocks-cms.com/h2bplasticos/upload/slide/6d7e083fa5224d66bd26394de530be51.png";
 
   const LOGO_IMAGE_URL =
-    'https://h2bplasticos.com.br/_next/image?url=%2Fimagens%2Flogo-h2b-removebg-preview.png&w=1080&q=75'
+    "https://h2bplasticos.com.br/_next/image?url=%2Fimagens%2Flogo-h2b-removebg-preview.png&w=1080&q=75";
 
-  const IMAGE_CAPTION = "Onde tecnologia e sustentabilidade se encontram."
+  const IMAGE_CAPTION = "Onde tecnologia e sustentabilidade se encontram.";
 
   // Mouse parallax effect para o texto
   useEffect(() => {
     const handleMouseMove = (e) => {
       if (containerRef.current) {
-        const rect = containerRef.current.getBoundingClientRect()
+        const rect = containerRef.current.getBoundingClientRect();
         setMousePosition({
           x: (e.clientX - rect.left) / rect.width - 0.5,
           y: (e.clientY - rect.top) / rect.height - 0.5,
-        })
+        });
       }
-    }
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
-  }, [])
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
 
   // Efeito de brilho do mouse na logo
   useEffect(() => {
     const handleLogoMouseMove = (e) => {
       if (logoContainerRef.current) {
-        const rect = logoContainerRef.current.getBoundingClientRect()
-        const x = ((e.clientX - rect.left) / rect.width) * 100
-        const y = ((e.clientY - rect.top) / rect.height) * 100
-        setLogoMousePosition({ x, y })
+        const rect = logoContainerRef.current.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        setLogoMousePosition({ x, y });
       }
-    }
+    };
 
-    const logoContainer = logoContainerRef.current
+    const logoContainer = logoContainerRef.current;
     if (logoContainer) {
-      logoContainer.addEventListener('mousemove', handleLogoMouseMove)
-      logoContainer.addEventListener('mouseleave', () => {
-        setLogoMousePosition({ x: 50, y: 50 })
-      })
+      logoContainer.addEventListener("mousemove", handleLogoMouseMove);
+      logoContainer.addEventListener("mouseleave", () => {
+        setLogoMousePosition({ x: 50, y: 50 });
+      });
     }
 
     return () => {
       if (logoContainer) {
-        logoContainer.removeEventListener('mousemove', handleLogoMouseMove)
-        logoContainer.removeEventListener('mouseleave', () => {
-          setLogoMousePosition({ x: 50, y: 50 })
-        })
+        logoContainer.removeEventListener("mousemove", handleLogoMouseMove);
+        logoContainer.removeEventListener("mouseleave", () => {
+          setLogoMousePosition({ x: 50, y: 50 });
+        });
       }
-    }
-  }, [])
+    };
+  }, []);
 
   const parallaxX = useSpring(
     useTransform(() => mousePosition.x * 20),
-    { damping: 30, stiffness: 200 }
-  )
+    { damping: 30, stiffness: 200 },
+  );
 
   const parallaxY = useSpring(
     useTransform(() => mousePosition.y * 20),
-    { damping: 30, stiffness: 200 }
-  )
+    { damping: 30, stiffness: 200 },
+  );
 
   // Partículas - MAIS VISÍVEIS (opacidade e cor aumentadas)
   const particles = Array.from({ length: 45 }, (_, i) => ({
@@ -106,14 +106,14 @@ const Hero = () => {
     duration: Math.random() * 15 + 10,
     delay: Math.random() * 5,
     opacity: Math.random() * 0.5 + 0.3, // Mais visíveis (0.3-0.8)
-  }))
+  }));
 
   // Estatísticas
   const stats = [
-    { icon: FaRecycle, value: '50+', label: 'Toneladas recicladas/mês' },
-    { icon: FaTrophy, value: '12+', label: 'Anos de experiência' },
-    { icon: FaClock, value: '24/7', label: 'Suporte técnico' },
-  ]
+    { icon: FaRecycle, value: "50+", label: "Toneladas recicladas/mês" },
+    { icon: FaTrophy, value: "12+", label: "Anos de experiência" },
+    { icon: FaClock, value: "24/7", label: "Suporte técnico" },
+  ];
 
   return (
     <section
@@ -133,7 +133,7 @@ const Hero = () => {
       </div>
 
       {/* Overlay industrial suave */}
-      <div className="absolute inset-0 opacity-15 bg-[url('data:image/svg+xml,%3Csvg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cg fill=&quot;none&quot; fill-rule=&quot;evenodd&quot;%3E%3Cg fill=&quot;%23ffffff&quot; fill-opacity=&quot;0.1&quot;%3E%3Cpath d=&quot;M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z&quot;/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')]" />
+      <div className='absolute inset-0 opacity-15 bg-[url(&apos;data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.1"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E&apos;)]' />
 
       {/* Partículas - MAIS VISÍVEIS (cor e opacidade aumentadas) */}
       {particles.map((p) => (
@@ -155,7 +155,7 @@ const Hero = () => {
             duration: p.duration,
             repeat: Infinity,
             delay: p.delay,
-            ease: 'easeInOut',
+            ease: "easeInOut",
           }}
         />
       ))}
@@ -182,7 +182,7 @@ const Hero = () => {
 
             {/* Título */}
             <motion.h1
-              className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight"
+              className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold leading-tight"
               initial="hidden"
               animate="visible"
               variants={{
@@ -193,7 +193,7 @@ const Hero = () => {
                 },
               }}
             >
-              {['Soluções', 'em', 'Plásticos', 'com'].map((word, i) => (
+              {["Soluções", "em", "Plásticos", "com"].map((word, i) => (
                 <motion.span
                   key={i}
                   variants={{
@@ -242,9 +242,11 @@ const Hero = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1, duration: 0.6 }}
             >
-              A H2B Plásticos transforma resinas em embalagens de alto desempenho para os setores alimentício,
-              construção, logística e agrícola. Com tecnologia de ponta e compromisso com a economia circular,
-              entregamos soluções personalizadas que unem durabilidade, segurança e inovação.
+              A H2B Plásticos transforma resinas em embalagens de alto
+              desempenho para os setores alimentício, construção, logística e
+              agrícola. Com tecnologia de ponta e compromisso com a economia
+              circular, entregamos soluções personalizadas que unem
+              durabilidade, segurança e inovação.
             </motion.p>
 
             {/* Botões */}
@@ -267,7 +269,6 @@ const Hero = () => {
                 className="border-2 border-cyan-300 hover:bg-cyan-300/20 text-white px-8 py-3 rounded-full flex items-center gap-2 transition-all duration-300"
               >
                 Catálogo de Produtos
-           
               </Link>
             </motion.div>
 
@@ -295,19 +296,18 @@ const Hero = () => {
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.8, duration: 0.8 }}
-            className="hidden lg:flex justify-center items-center ml-24 xl:ml-60"
+            className="hidden md:flex justify-center items-center md:ml-0 lg:ml-24 xl:ml-60"
           >
             <div
               ref={logoContainerRef}
               className="relative group cursor-pointer"
-              style={{ perspective: '1000px' }}
+              style={{ perspective: "1000px" }}
             >
               {/* Efeito de brilho externo */}
               <div className="absolute -inset-4 bg-cyan-300/20 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-              
+
               {/* Card principal */}
               <div className="relative bg-white/10 backdrop-blur-md rounded-3xl p-10 border border-cyan-300/30 shadow-2xl max-w-md w-full overflow-hidden">
-                
                 {/* Gradiente animado de fundo */}
                 <motion.div
                   className="absolute inset-0 bg-gradient-to-br from-cyan-300/5 to-transparent"
@@ -355,9 +355,9 @@ const Hero = () => {
                     alt="Logo H2B"
                     className="w-80 h-auto object-contain transition-all duration-500 group-hover:scale-105 drop-shadow-2xl"
                     onError={(e) => {
-                      e.target.onerror = null
+                      e.target.onerror = null;
                       e.target.src =
-                        'https://placehold.co/400x200/0A4A6E/cyan?text=H2B'
+                        "https://placehold.co/400x200/0A4A6E/cyan?text=H2B";
                     }}
                   />
                 </motion.div>
@@ -376,9 +376,10 @@ const Hero = () => {
                 <motion.p
                   className="text-center text-white text-lg font-semibold tracking-wide relative z-10"
                   animate={{
-                    textShadow: logoMousePosition.x !== 50
-                      ? `0 0 10px rgba(6, 182, 212, 0.5)`
-                      : `0 0 0px rgba(6, 182, 212, 0)`
+                    textShadow:
+                      logoMousePosition.x !== 50
+                        ? `0 0 10px rgba(6, 182, 212, 0.5)`
+                        : `0 0 0px rgba(6, 182, 212, 0)`,
                   }}
                 >
                   {IMAGE_CAPTION}
@@ -395,15 +396,13 @@ const Hero = () => {
       </div>
 
       {/* Indicador de scroll */}
-      <motion.div 
+      <motion.div
         className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
         animate={{ y: [0, 10, 0] }}
         transition={{ duration: 2, repeat: Infinity }}
-      >
-
-      </motion.div>
+      ></motion.div>
     </section>
-  )
-}
+  );
+};
 
-export default Hero
+export default Hero;

@@ -1,10 +1,10 @@
-import { motion, useScroll, useTransform } from 'framer-motion'
-import { Link } from 'react-router-dom'
-import { 
-  FaArrowLeft, 
-  FaHandshake, 
-  FaLeaf, 
-  FaUsers, 
+import { motion, useScroll, useTransform } from "framer-motion";
+import { Link } from "react-router-dom";
+import {
+  FaArrowLeft,
+  FaHandshake,
+  FaLeaf,
+  FaUsers,
   FaBalanceScale,
   FaShieldAlt,
   FaRegLightbulb,
@@ -15,167 +15,174 @@ import {
   FaExclamationTriangle,
   FaPhoneAlt,
   FaEnvelope,
-  FaLock
-} from 'react-icons/fa'
-import { useEffect, useState, useRef } from 'react'
+  FaLock,
+} from "react-icons/fa";
+import { useEffect, useState, useRef } from "react";
 
 const CodigoEtica = () => {
-  const [activeSection, setActiveSection] = useState('missao')
-  const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 })
-  const { scrollYProgress } = useScroll()
-  const sectionRef = useRef(null)
+  const [activeSection, setActiveSection] = useState("missao");
+  const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 });
+  const { scrollYProgress } = useScroll();
+  const sectionRef = useRef(null);
 
   // Efeito de mouse para gradiente dinâmico
   useEffect(() => {
     const handleMouseMove = (e) => {
-      const x = (e.clientX / window.innerWidth) * 100
-      const y = (e.clientY / window.innerHeight) * 100
-      setMousePosition({ x, y })
-    }
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
-  }, [])
+      const x = (e.clientX / window.innerWidth) * 100;
+      const y = (e.clientY / window.innerHeight) * 100;
+      setMousePosition({ x, y });
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
 
   // Scroll para o topo
   useEffect(() => {
     setTimeout(() => {
       if (sectionRef.current) {
-        const offset = 70
-        const elementPosition = sectionRef.current.getBoundingClientRect().top
-        const offsetPosition = elementPosition + window.pageYOffset - offset
-        window.scrollTo({ top: offsetPosition, behavior: 'smooth' })
+        const offset = 70;
+        const elementPosition = sectionRef.current.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - offset;
+        window.scrollTo({ top: offsetPosition, behavior: "smooth" });
       }
-    }, 100)
-  }, [])
+    }, 100);
+  }, []);
 
   // Smooth scroll para seções
   const scrollToSection = (sectionId) => {
-    const element = document.getElementById(sectionId)
+    const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      setActiveSection(sectionId)
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+      setActiveSection(sectionId);
     }
-  }
+  };
 
   // Detectar seção ativa durante o scroll
   useEffect(() => {
-    const sections = ['missao', 'valores', 'compromissos', 'canais']
+    const sections = ["missao", "valores", "compromissos", "canais"];
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setActiveSection(entry.target.id)
+            setActiveSection(entry.target.id);
           }
-        })
+        });
       },
-      { threshold: 0.3 }
-    )
+      { threshold: 0.3 },
+    );
 
     sections.forEach((section) => {
-      const element = document.getElementById(section)
-      if (element) observer.observe(element)
-    })
+      const element = document.getElementById(section);
+      if (element) observer.observe(element);
+    });
 
-    return () => observer.disconnect()
-  }, [])
+    return () => observer.disconnect();
+  }, []);
 
   // Animações
   const fadeUp = {
     hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } }
-  }
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" },
+    },
+  };
 
   const staggerContainer = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.1, delayChildren: 0.2 }
-    }
-  }
+      transition: { staggerChildren: 0.1, delayChildren: 0.2 },
+    },
+  };
 
   const valores = [
     {
       icon: FaBalanceScale,
-      title: 'Integridade',
-      description: 'Agimos com honestidade, transparência e justiça em todas as relações.'
+      title: "Integridade",
+      description:
+        "Agimos com honestidade, transparência e justiça em todas as relações.",
     },
     {
       icon: FaLeaf,
-      title: 'Sustentabilidade',
-      description: 'Compromisso com o meio ambiente e a economia circular.'
+      title: "Sustentabilidade",
+      description: "Compromisso com o meio ambiente e a economia circular.",
     },
     {
       icon: FaUsers,
-      title: 'Respeito à Diversidade',
-      description: 'Valorizamos a diversidade e tratamos todos com dignidade e igualdade.'
+      title: "Respeito à Diversidade",
+      description:
+        "Valorizamos a diversidade e tratamos todos com dignidade e igualdade.",
     },
     {
       icon: FaHandshake,
-      title: 'Excelência',
-      description: 'Buscamos a melhoria contínua em tudo o que fazemos.'
+      title: "Excelência",
+      description: "Buscamos a melhoria contínua em tudo o que fazemos.",
     },
     {
       icon: FaRegLightbulb,
-      title: 'Inovação',
-      description: 'Estimulamos a criatividade e buscamos soluções inovadoras.'
+      title: "Inovação",
+      description: "Estimulamos a criatividade e buscamos soluções inovadoras.",
     },
     {
       icon: FaHeart,
-      title: 'Empatia',
-      description: 'Colocamo-nos no lugar do outro para construir relações mais humanas.'
-    }
-  ]
+      title: "Empatia",
+      description:
+        "Colocamo-nos no lugar do outro para construir relações mais humanas.",
+    },
+  ];
 
   const compromissos = [
     {
       icon: FaCheckCircle,
-      text: 'Cumprir rigorosamente as leis e regulamentações aplicáveis',
-      category: 'Legal'
+      text: "Cumprir rigorosamente as leis e regulamentações aplicáveis",
+      category: "Legal",
     },
     {
       icon: FaShieldAlt,
-      text: 'Promover um ambiente de trabalho seguro, saudável e inclusivo',
-      category: 'Segurança'
+      text: "Promover um ambiente de trabalho seguro, saudável e inclusivo",
+      category: "Segurança",
     },
     {
       icon: FaExclamationTriangle,
-      text: 'Combater qualquer forma de corrupção, fraude ou suborno',
-      category: 'Integridade'
+      text: "Combater qualquer forma de corrupção, fraude ou suborno",
+      category: "Integridade",
     },
     {
       icon: FaLock,
-      text: 'Proteger dados e informações confidenciais',
-      category: 'Privacidade'
+      text: "Proteger dados e informações confidenciais",
+      category: "Privacidade",
     },
     {
       icon: FaChartLine,
-      text: 'Praticar a concorrência leal e ética no mercado',
-      category: 'Mercado'
+      text: "Praticar a concorrência leal e ética no mercado",
+      category: "Mercado",
     },
     {
       icon: FaGlobeAmericas,
-      text: 'Reduzir impactos ambientais e promover a economia circular',
-      category: 'Sustentabilidade'
-    }
-  ]
+      text: "Reduzir impactos ambientais e promover a economia circular",
+      category: "Sustentabilidade",
+    },
+  ];
 
   const canaisDenuncia = [
     {
       icon: FaEnvelope,
-      title: 'E-mail',
-      value: 'etica@h2bplasticos.com.br'
+      title: "E-mail",
+      value: "etica@h2bplasticos.com.br",
     },
     {
       icon: FaPhoneAlt,
-      title: 'Telefone',
-      value: '(32) 99811-4901'
+      title: "Telefone",
+      value: "(32) 99811-4901",
     },
     {
       icon: FaLock,
-      title: 'Canal Sigiloso',
-      value: 'www.h2bplasticos.com.br/canal-denuncia'
-    }
-  ]
+      title: "Canal Sigiloso",
+      value: "www.h2bplasticos.com.br/canal-denuncia",
+    },
+  ];
 
   return (
     <section
@@ -184,10 +191,10 @@ const CodigoEtica = () => {
     >
       {/* Fundo com gradiente dinâmico seguindo o mouse */}
       <div className="absolute inset-0 pointer-events-none">
-        <div 
+        <div
           className="absolute inset-0 opacity-30"
           style={{
-            background: `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(6, 182, 212, 0.15) 0%, rgba(6, 182, 212, 0) 60%)`
+            background: `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(6, 182, 212, 0.15) 0%, rgba(6, 182, 212, 0) 60%)`,
           }}
         />
       </div>
@@ -200,9 +207,9 @@ const CodigoEtica = () => {
       </div>
 
       {/* Barra de progresso de scroll */}
-      <motion.div 
+      <motion.div
         className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-400 to-blue-600 z-50"
-        style={{ scaleX: scrollYProgress, transformOrigin: '0%' }}
+        style={{ scaleX: scrollYProgress, transformOrigin: "0%" }}
       />
 
       <div className="container mx-auto px-4 md:px-6 relative z-10">
@@ -216,7 +223,7 @@ const CodigoEtica = () => {
           <div className="relative mb-12">
             {/* Badge de última atualização */}
             <div className="absolute top-0 right-0 bg-cyan-500/20 backdrop-blur-sm text-cyan-300 text-xs font-semibold px-3 py-1 rounded-full border border-cyan-400/30">
-              📅 Atualizado: {new Date().toLocaleDateString('pt-BR')}
+              📅 Atualizado: {new Date().toLocaleDateString("pt-BR")}
             </div>
 
             {/* Botão voltar */}
@@ -235,7 +242,7 @@ const CodigoEtica = () => {
               <motion.div
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
-                transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
+                transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
                 className="inline-block mb-6"
               >
                 <div className="relative">
@@ -246,28 +253,29 @@ const CodigoEtica = () => {
                 </div>
               </motion.div>
 
-              <motion.h1 
-                className="text-5xl md:text-6xl lg:text-7xl font-bold mb-4"
+              <motion.h1
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4"
                 variants={fadeUp}
               >
                 <span className="bg-gradient-to-r from-white to-cyan-300 bg-clip-text text-transparent">
                   Código de
-                </span>{' '}
+                </span>{" "}
                 <span className="bg-gradient-to-r from-cyan-400 via-cyan-300 to-blue-400 bg-clip-text text-transparent">
                   Ética
                 </span>
               </motion.h1>
-              
-              <motion.div 
+
+              <motion.div
                 className="w-24 h-1 bg-gradient-to-r from-cyan-400 to-blue-600 mx-auto mb-6 rounded-full"
                 variants={fadeUp}
               />
-              
-              <motion.p 
+
+              <motion.p
                 className="text-gray-300 text-lg max-w-2xl mx-auto"
                 variants={fadeUp}
               >
-                Nossos princípios e valores guiam todas as nossas ações e decisões
+                Nossos princípios e valores guiam todas as nossas ações e
+                decisões
               </motion.p>
             </div>
 
@@ -275,18 +283,19 @@ const CodigoEtica = () => {
             <div className="sticky top-20 z-40 bg-white/5 backdrop-blur-md rounded-2xl shadow-sm border border-white/10 p-2 mb-12">
               <div className="flex flex-wrap justify-center gap-2">
                 {[
-                  { id: 'missao', label: 'Missão' },
-                  { id: 'valores', label: 'Valores' },
-                  { id: 'compromissos', label: 'Compromissos' },
-                  { id: 'canais', label: 'Canais' }
+                  { id: "missao", label: "Missão" },
+                  { id: "valores", label: "Valores" },
+                  { id: "compromissos", label: "Compromissos" },
+                  { id: "canais", label: "Canais" },
                 ].map((item) => (
                   <button
                     key={item.id}
                     onClick={() => scrollToSection(item.id)}
                     className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300
-                      ${activeSection === item.id 
-                        ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md' 
-                        : 'text-gray-300 hover:bg-white/10'
+                      ${
+                        activeSection === item.id
+                          ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md"
+                          : "text-gray-300 hover:bg-white/10"
                       }`}
                   >
                     {item.label}
@@ -302,7 +311,7 @@ const CodigoEtica = () => {
               id="missao"
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, margin: '-100px' }}
+              viewport={{ once: true, margin: "-100px" }}
               variants={fadeUp}
               className="scroll-mt-24"
             >
@@ -314,8 +323,9 @@ const CodigoEtica = () => {
                   Nossa Missão
                 </h2>
                 <p className="text-gray-300 text-xl md:text-2xl leading-relaxed italic font-light">
-                  "Transformar o setor plástico com soluções inovadoras, sustentáveis e éticas, 
-                  gerando valor para nossos clientes, colaboradores e sociedade."
+                  "Transformar o setor plástico com soluções inovadoras,
+                  sustentáveis e éticas, gerando valor para nossos clientes,
+                  colaboradores e sociedade."
                 </p>
                 <div className="mt-8 flex items-center gap-2 text-cyan-400">
                   <span className="text-sm">Compromisso com a excelência</span>
@@ -328,7 +338,7 @@ const CodigoEtica = () => {
               id="valores"
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, margin: '-100px' }}
+              viewport={{ once: true, margin: "-100px" }}
               variants={fadeUp}
               className="scroll-mt-24"
             >
@@ -359,8 +369,12 @@ const CodigoEtica = () => {
                     <div className="bg-gradient-to-br from-cyan-400/20 to-blue-600/20 w-14 h-14 rounded-2xl flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300">
                       <valor.icon className="text-cyan-400 text-2xl" />
                     </div>
-                    <h3 className="text-xl font-bold text-white mb-2">{valor.title}</h3>
-                    <p className="text-gray-300 text-sm leading-relaxed">{valor.description}</p>
+                    <h3 className="text-xl font-bold text-white mb-2">
+                      {valor.title}
+                    </h3>
+                    <p className="text-gray-300 text-sm leading-relaxed">
+                      {valor.description}
+                    </p>
                   </motion.div>
                 ))}
               </motion.div>
@@ -371,7 +385,7 @@ const CodigoEtica = () => {
               id="compromissos"
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, margin: '-100px' }}
+              viewport={{ once: true, margin: "-100px" }}
               variants={fadeUp}
               className="scroll-mt-24"
             >
@@ -402,8 +416,12 @@ const CodigoEtica = () => {
                         </div>
                       </div>
                       <div className="flex-1">
-                        <p className="text-gray-300 leading-relaxed">{comp.text}</p>
-                        <span className="text-xs text-cyan-400 mt-1 inline-block">{comp.category}</span>
+                        <p className="text-gray-300 leading-relaxed">
+                          {comp.text}
+                        </p>
+                        <span className="text-xs text-cyan-400 mt-1 inline-block">
+                          {comp.category}
+                        </span>
                       </div>
                     </motion.div>
                   ))}
@@ -416,10 +434,14 @@ const CodigoEtica = () => {
                       <FaHandshake className="text-white text-xl" />
                     </div>
                     <div>
-                      <h3 className="text-lg font-bold text-cyan-300 mb-2">Compromisso da Liderança</h3>
+                      <h3 className="text-lg font-bold text-cyan-300 mb-2">
+                        Compromisso da Liderança
+                      </h3>
                       <p className="text-gray-300">
-                        Nossa diretoria e gestores são os primeiros responsáveis por garantir o cumprimento deste Código, 
-                        liderando pelo exemplo e promovendo uma cultura ética em toda a organização.
+                        Nossa diretoria e gestores são os primeiros responsáveis
+                        por garantir o cumprimento deste Código, liderando pelo
+                        exemplo e promovendo uma cultura ética em toda a
+                        organização.
                       </p>
                     </div>
                   </div>
@@ -432,7 +454,7 @@ const CodigoEtica = () => {
               id="canais"
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, margin: '-100px' }}
+              viewport={{ once: true, margin: "-100px" }}
               variants={fadeUp}
               className="scroll-mt-24"
             >
@@ -446,7 +468,8 @@ const CodigoEtica = () => {
                   </h2>
                   <div className="w-20 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-600 mx-auto mt-4 rounded-full" />
                   <p className="text-gray-300 mt-4 max-w-2xl mx-auto">
-                    Disponibilizamos canais seguros e confidenciais para relatar qualquer violação ao nosso Código de Ética
+                    Disponibilizamos canais seguros e confidenciais para relatar
+                    qualquer violação ao nosso Código de Ética
                   </p>
                 </div>
 
@@ -460,7 +483,9 @@ const CodigoEtica = () => {
                       <div className="bg-gradient-to-br from-cyan-400/20 to-blue-600/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                         <canal.icon className="text-3xl text-cyan-400" />
                       </div>
-                      <h3 className="font-semibold text-white text-lg mb-2">{canal.title}</h3>
+                      <h3 className="font-semibold text-white text-lg mb-2">
+                        {canal.title}
+                      </h3>
                       <p className="text-cyan-300 text-sm break-all select-all">
                         {canal.value}
                       </p>
@@ -474,7 +499,8 @@ const CodigoEtica = () => {
 
                 <div className="mt-8 text-center">
                   <p className="text-gray-400 text-sm">
-                    Todos os relatos são tratados com sigilo absoluto e imparcialidade
+                    Todos os relatos são tratados com sigilo absoluto e
+                    imparcialidade
                   </p>
                 </div>
               </div>
@@ -483,14 +509,21 @@ const CodigoEtica = () => {
             {/* Footer da página */}
             <div className="text-center pt-8 border-t border-white/10">
               <p className="text-gray-400 text-sm">
-                © {new Date().getFullYear()} H2B Plásticos - Código de Ética e Conduta
+                © {new Date().getFullYear()} H2B Plásticos - Código de Ética e
+                Conduta
               </p>
               <div className="flex justify-center gap-4 mt-4">
-                <Link to="/politica-privacidade" className="text-xs text-gray-400 hover:text-cyan-400 transition-colors">
+                <Link
+                  to="/politica-privacidade"
+                  className="text-xs text-gray-400 hover:text-cyan-400 transition-colors"
+                >
                   Política de Privacidade
                 </Link>
                 <span className="text-gray-500">|</span>
-                <Link to="/termos-uso" className="text-xs text-gray-400 hover:text-cyan-400 transition-colors">
+                <Link
+                  to="/termos-uso"
+                  className="text-xs text-gray-400 hover:text-cyan-400 transition-colors"
+                >
                   Termos de Uso
                 </Link>
               </div>
@@ -499,7 +532,7 @@ const CodigoEtica = () => {
         </motion.div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default CodigoEtica
+export default CodigoEtica;

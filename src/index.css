@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -132,5 +132,67 @@ section h3 span {
 @layer utilities {
   .no-text-transform {
     text-transform: none !important;
+  }
+}
+
+/* ============================================
+   RESPONSIVIDADE - MOBILE FIRST
+============================================ */
+
+/* Container padding responsivo */
+.container {
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+}
+
+@media (min-width: 640px) {
+  .container {
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+  }
+}
+
+/* Títulos responsivos */
+h1 {
+  word-break: break-word;
+  hyphens: auto;
+}
+
+/* Overflow horizontal prevention */
+img,
+video,
+iframe {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Fix table/iframe overflow on mobile */
+.overflow-x-auto {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Fix for long words on mobile */
+.break-word {
+  word-break: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+/* Touch-friendly buttons on mobile */
+@media (max-width: 767px) {
+  button,
+  a {
+    touch-action: manipulation;
+  }
+
+  .min-h-screen {
+    min-height: 100dvh;
   }
 }

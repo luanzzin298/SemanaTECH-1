@@ -1,40 +1,41 @@
-import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { FaChevronLeft, FaChevronRight, FaStar } from 'react-icons/fa'
-import { testimonials } from '../data/content'
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { FaChevronLeft, FaChevronRight, FaStar } from "react-icons/fa";
+import { testimonials } from "../data/content";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
   show: { opacity: 1, y: 0 },
-}
+};
 
 const fadeOutUp = {
   hidden: { opacity: 0, y: -20 },
   show: { opacity: 1, y: 0 },
-}
+};
 
 const stagger = (delayChildren = 0.1) => ({
   hidden: {},
   show: { transition: { staggerChildren: delayChildren } },
-})
+});
 
 const Testimonials = () => {
-  const [index, setIndex] = useState(0)
+  const [index, setIndex] = useState(0);
 
-  const next = () => setIndex((i) => (i + 1) % testimonials.length)
-  const prev = () => setIndex((i) => (i - 1 + testimonials.length) % testimonials.length)
+  const next = () => setIndex((i) => (i + 1) % testimonials.length);
+  const prev = () =>
+    setIndex((i) => (i - 1 + testimonials.length) % testimonials.length);
 
-  const goToSlide = (i) => setIndex(i)
+  const goToSlide = (i) => setIndex(i);
 
   return (
     <section
-      className="py-24 bg-primary text-white relative overflow-hidden"
+      className="pt-24 pb-20 bg-gradient-to-br from-[#001C30] via-[#001C30] to-[#0A4A6E] text-white relative overflow-hidden"
       aria-label="Depoimentos de clientes"
     >
       {/* Fundo decorativo */}
-      <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
-        <div className="absolute top-20 left-10 w-64 h-64 bg-accent rounded-full filter blur-3xl" />
-        <div className="absolute bottom-20 right-10 w-80 h-80 bg-secondary rounded-full filter blur-3xl" />
+      <div className="absolute inset-0 opacity-5 pointer-events-none">
+        <div className="absolute top-0 left-0 w-96 h-96 bg-cyan-400 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-600 rounded-full blur-3xl" />
       </div>
 
       <div className="container mx-auto px-6 text-center relative z-10">
@@ -57,8 +58,7 @@ const Testimonials = () => {
             variants={fadeUp}
             className="text-3xl md:text-4xl font-bold"
           >
-            O que nossos{' '}
-            <span className="text-accent">clientes</span> dizem
+            O que nossos <span className="text-accent">clientes</span> dizem
           </motion.h2>
 
           <motion.div
@@ -95,8 +95,8 @@ const Testimonials = () => {
                     key={i}
                     className={`text-xl transition-colors ${
                       i < testimonials[index].rating
-                        ? 'text-accent'
-                        : 'text-white/30'
+                        ? "text-accent"
+                        : "text-white/30"
                     }`}
                     aria-hidden="true"
                   />
@@ -104,7 +104,9 @@ const Testimonials = () => {
               </div>
 
               {/* Informações do cliente */}
-              <p className="mt-6 font-bold text-lg">{testimonials[index].name}</p>
+              <p className="mt-6 font-bold text-lg">
+                {testimonials[index].name}
+              </p>
               <p className="text-gray-300">{testimonials[index].role}</p>
 
               <div className="text-6xl text-accent/30 font-serif text-right -mb-4 -mt-2">
@@ -139,16 +141,21 @@ const Testimonials = () => {
         </div>
 
         {/* Indicadores (dots) */}
-        <div className="flex justify-center gap-2 mt-8" role="tablist" aria-label="Depoimentos">
+        <div
+          className="flex justify-center gap-2 mt-8"
+          role="tablist"
+          aria-label="Depoimentos"
+        >
           {testimonials.map((_, i) => (
             <button
               key={i}
               onClick={() => goToSlide(i)}
               className={`h-2 rounded-full transition-all duration-300
                          focus:outline-none focus:ring-2 focus:ring-accent/50
-                         ${i === index 
-                           ? 'bg-accent w-8' 
-                           : 'bg-white/50 w-2 hover:bg-white/80'
+                         ${
+                           i === index
+                             ? "bg-accent w-8"
+                             : "bg-white/50 w-2 hover:bg-white/80"
                          }`}
               role="tab"
               aria-selected={i === index}
@@ -163,7 +170,7 @@ const Testimonials = () => {
         </p>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default Testimonials
+export default Testimonials;
